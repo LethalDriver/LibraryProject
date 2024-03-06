@@ -9,7 +9,6 @@ import com.example.libraryproject.domain.BlacklistedToken;
 import com.example.libraryproject.dto.AuthenticationRequest;
 import com.example.libraryproject.dto.AuthenticationResponse;
 import lombok.RequiredArgsConstructor;
-import org.mwdziak.vaccinationbackend.domain.BlacklistedToken;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

@@ -46,8 +46,7 @@ public class UserService {
                 .lastName(request.getLastName())
                 .email(request.getEmail())
                 .password(encoder.encode(request.getPassword()))
-                .dateOfBirth(LocalDate.parse(request.getDateOfBirth()))
-                .role(User.Role.USER)
+                .role(User.Role.READER)
                 .build();
 
         return userRepository.save(user);

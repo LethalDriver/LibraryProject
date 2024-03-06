@@ -33,9 +33,11 @@ public class User implements UserDetails {
     private String lastName;
     @Nonnull
     private Role role;
+    @OneToMany(mappedBy = "user")
+    private List<Borrowing> borrowings;
 
     public enum Role {
-        USER, ADMIN
+        READER, LIBRARIAN
     }
 
     @Override
