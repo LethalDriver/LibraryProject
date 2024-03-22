@@ -19,9 +19,9 @@ public class Book {
     private Long id;
     private String title;
     private String author;
-    private String genre;
     private String isbn;
-    private String description;
+    private String publisher;
+    private Integer availableCopies;
     @ManyToMany
     private List<Borrowing> borrowing;
 }
