@@ -24,13 +24,13 @@ public class User implements UserDetails {
     @GeneratedValue
     private Long id;
     @Nonnull
+    private String username;
+    @Nonnull
     private String email;
     @Nonnull
     private String password;
     @Nonnull
-    private String firstName;
-    @Nonnull
-    private String lastName;
+    private String name;
     @Nonnull
     private Role role;
     @OneToMany(mappedBy = "user")
@@ -47,7 +47,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return email;
+        return username;
     }
 
     @Override
