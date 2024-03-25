@@ -12,28 +12,28 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 
-@RestController
+@RestController("/auth")
 @RequiredArgsConstructor
 public class AuthenticationController {
 
     private final AuthenticationService authenticationService;
     private final UserService userService;
 
-    @PostMapping("/auth/register")
+    @PostMapping("/register")
     public AuthenticationResponse registerUser(@RequestBody RegistrationRequest request) {
         return authenticationService.authenticate(new AuthenticationRequest(request.getEmail(), request.getPassword()));
     }
 
-    @PostMapping("/auth/login")
+    @PostMapping("/login")
     public AuthenticationResponse loginUser(@RequestBody AuthenticationRequest user) {
         return authenticationService.authenticate(user);
     }
-    @PostMapping("/auth/refresh")
+    @PostMapping("/refresh")
     public AuthenticationResponse refreshToken(@RequestBody TokensDTO request) {
         return authenticationService.refresh(request);
     }
 
-    @PostMapping("/auth/logout")
+    @PostMapping("/logout")
     public void logout(@RequestBody TokensDTO request) {
         authenticationService.logout(request);
     }
