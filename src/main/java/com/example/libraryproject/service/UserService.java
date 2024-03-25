@@ -42,8 +42,8 @@ public class UserService {
         }
 
         var user = User.builder()
-                .firstName(request.getFirstName())
-                .lastName(request.getLastName())
+                .name(request.getName())
+                .username(request.getUsername())
                 .email(request.getEmail())
                 .password(encoder.encode(request.getPassword()))
                 .role(User.Role.READER)
