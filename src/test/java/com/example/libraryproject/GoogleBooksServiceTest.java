@@ -37,7 +37,6 @@ public class GoogleBooksServiceTest {
 
         List<Book> books = googleBooksService.getBooks(title);
 
-        System.out.println(books);
         assertEquals(2, books.size());
     }
 }
