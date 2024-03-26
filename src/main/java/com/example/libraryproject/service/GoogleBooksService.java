@@ -1,5 +1,6 @@
 package com.example.libraryproject.service;
 
+import lombok.RequiredArgsConstructor;
 import org.json.JSONObject;
 import org.json.JSONArray;
 import org.springframework.http.ResponseEntity;
@@ -12,9 +13,10 @@ import java.util.List;
 import java.util.Random;
 
 @Service
+@RequiredArgsConstructor
 public class GoogleBooksService {
+    private final RestTemplate restTemplate;
     public List<Book> getBooks(String title) {
-        RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<String> response = restTemplate.getForEntity("https://www.googleapis.com/books/v1/volumes?q=" + title, String.class);
 
         JSONObject jsonObject = new JSONObject(response.getBody());
