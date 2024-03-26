@@ -1,0 +1,152 @@
+{
+  "kind": "books#volumes",
+  "totalItems": 481,
+  "items": [
+    {
+      "kind": "books#volume",
+      "id": "wA8bDQAAQBAJ",
+      "etag": "k/9F/dU6Djk",
+      "selfLink": "https://www.googleapis.com/books/v1/volumes/wA8bDQAAQBAJ",
+      "volumeInfo": {
+        "title": "Harry Potter i Zakon Feniksa",
+        "authors": [
+          "J.K. Rowling"
+        ],
+        "publisher": "Pottermore Publishing",
+        "publishedDate": "2015-12-08",
+        "description": "Harry znów spędza nudne, przykre wakacje w domu Dursleyów. Czeka go piąty rok nauki w Hogwarcie i chciałby jak najszybciej spotkać się ze swoimi najlepszymi przyjaciółmi, Ronem i Hermioną. Ci jednak wyraźnie go zaniedbują. Gdy Harry ma już dość wszystkiego wszystkiego postanawia jakoś zmienić swoją nieznośną sytuację, sprawy przyjmują całkiem nieoczekiwany obrót.",
+        "industryIdentifiers": [
+          {
+            "type": "ISBN_13",
+            "identifier": "9781781104699"
+          },
+          {
+            "type": "ISBN_10",
+            "identifier": "1781104697"
+          }
+        ],
+        "readingModes": {
+          "text": true,
+          "image": false
+        },
+        "pageCount": 983,
+        "printType": "BOOK",
+        "categories": [
+          "Juvenile Fiction"
+        ],
+        "averageRating": 4.5,
+        "ratingsCount": 3,
+        "maturityRating": "NOT_MATURE",
+        "allowAnonLogging": true,
+        "contentVersion": "1.7.9.0.preview.2",
+        "panelizationSummary": {
+          "containsEpubBubbles": false,
+          "containsImageBubbles": false
+        },
+        "imageLinks": {
+          "smallThumbnail": "http://books.google.com/books/content?id=wA8bDQAAQBAJ&printsec=frontcover&img=1&zoom=5&source=gbs_api",
+          "thumbnail": "http://books.google.com/books/content?id=wA8bDQAAQBAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api"
+        },
+        "language": "pl",
+        "previewLink": "http://books.google.pl/books?id=wA8bDQAAQBAJ&dq=Harry+Potter&hl=&cd=1&source=gbs_api",
+        "infoLink": "http://books.google.pl/books?id=wA8bDQAAQBAJ&dq=Harry+Potter&hl=&source=gbs_api",
+        "canonicalVolumeLink": "https://books.google.com/books/about/Harry_Potter_i_Zakon_Feniksa.html?hl=&id=wA8bDQAAQBAJ"
+      },
+      "saleInfo": {
+        "country": "PL",
+        "saleability": "NOT_FOR_SALE",
+        "isEbook": false
+      },
+      "accessInfo": {
+        "country": "PL",
+        "viewability": "NO_PAGES",
+        "embeddable": false,
+        "publicDomain": false,
+        "textToSpeechPermission": "ALLOWED",
+        "epub": {
+          "isAvailable": true
+        },
+        "pdf": {
+          "isAvailable": true
+        },
+        "webReaderLink": "http://play.google.com/books/reader?id=wA8bDQAAQBAJ&hl=&source=gbs_api",
+        "accessViewStatus": "NONE",
+        "quoteSharingAllowed": false
+      },
+      "searchInfo": {
+        "textSnippet": "Harry znów spędza nudne, przykre wakacje w domu Dursleyów."
+      }
+    },
+    {
+      "kind": "books#volume",
+      "id": "8exSvgAACAAJ",
+      "etag": "wLU8NszoRRs",
+      "selfLink": "https://www.googleapis.com/books/v1/volumes/8exSvgAACAAJ",
+      "volumeInfo": {
+        "title": "Harry Potter i komnata tajemnic",
+        "authors": [
+          "J. K. Rowling"
+        ],
+        "publishedDate": "2016",
+        "industryIdentifiers": [
+          {
+            "type": "ISBN_10",
+            "identifier": "8380082133"
+          },
+          {
+            "type": "ISBN_13",
+            "identifier": "9788380082137"
+          }
+        ],
+        "readingModes": {
+          "text": false,
+          "image": false
+        },
+        "pageCount": 357,
+        "printType": "BOOK",
+        "categories": [
+          "England"
+        ],
+        "maturityRating": "NOT_MATURE",
+        "allowAnonLogging": false,
+        "contentVersion": "preview-1.0.0",
+        "panelizationSummary": {
+          "containsEpubBubbles": false,
+          "containsImageBubbles": false
+        },
+        "imageLinks": {
+          "smallThumbnail": "http://books.google.com/books/content?id=8exSvgAACAAJ&printsec=frontcover&img=1&zoom=5&source=gbs_api",
+          "thumbnail": "http://books.google.com/books/content?id=8exSvgAACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api"
+        },
+        "language": "pl",
+        "previewLink": "http://books.google.pl/books?id=8exSvgAACAAJ&dq=Harry+Potter&hl=&cd=2&source=gbs_api",
+        "infoLink": "http://books.google.pl/books?id=8exSvgAACAAJ&dq=Harry+Potter&hl=&source=gbs_api",
+        "canonicalVolumeLink": "https://books.google.com/books/about/Harry_Potter_i_komnata_tajemnic.html?hl=&id=8exSvgAACAAJ"
+      },
+      "saleInfo": {
+        "country": "PL",
+        "saleability": "NOT_FOR_SALE",
+        "isEbook": false
+      },
+      "accessInfo": {
+        "country": "PL",
+        "viewability": "NO_PAGES",
+        "embeddable": false,
+        "publicDomain": false,
+        "textToSpeechPermission": "ALLOWED",
+        "epub": {
+          "isAvailable": false
+        },
+        "pdf": {
+          "isAvailable": false
+        },
+        "webReaderLink": "http://play.google.com/books/reader?id=8exSvgAACAAJ&hl=&source=gbs_api",
+        "accessViewStatus": "NONE",
+        "quoteSharingAllowed": false
+      },
+      "searchInfo": {
+        "textSnippet": "Wydanie różni się od poprzednich nie tylko okładką, ale i wnętrzem - po raz pierwszy na początku każdego tomu pojawi się mapka Hogwartu i okolic, a na końcu pierwszego tomu na czytelników czekać będzie coś zupełnie ..."
+      }
+    }
+    ]
+}
