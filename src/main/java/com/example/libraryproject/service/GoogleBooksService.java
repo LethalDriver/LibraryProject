@@ -33,15 +33,17 @@ public class GoogleBooksService {
     public Book mapResponseElementToBook(JSONObject jsonObject) {
         JSONObject volumeInfo = jsonObject.getJSONObject("volumeInfo");
         JSONArray authors = volumeInfo.getJSONArray("authors");
-        String author = !authors.isEmpty() ? authors.getString(0) : null;
+        String author = authors.length() != 0 ? authors.getString(0) : null;
         JSONObject industryIdentifiers = volumeInfo.getJSONArray("industryIdentifiers").getJSONObject(0);
         String isbn = industryIdentifiers.getString("identifier");
+
+        String publisher = volumeInfo.optString("publisher", null);
 
         return Book.builder()
                 .title(volumeInfo.getString("title"))
                 .author(author)
                 .isbn(isbn)
-                .publisher(volumeInfo.getString("publisher"))
+                .publisher(publisher)
                 .availableCopies(new Random().nextInt(10) + 1)
                 .build();
     }
