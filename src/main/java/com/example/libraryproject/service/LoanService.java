@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -68,11 +69,11 @@ public class LoanService {
         return loanMapper.toDTO(loan);
     }
 
-    public LoanDTO getLoanDetails(Long loanId) {
+    public Optional<LoanDTO> getLoanDetails(Long loanId) {
         var loan = loanRepository.findById(loanId).orElseThrow(
                 () -> new IllegalArgumentException("Loan with id " + loanId + " does not exist")
         );
-        return loanMapper.toDTO(loan);
+        return Optional.ofNullable(loanMapper.toDTO(loan));
     }
 
     public List<LoanDTO> getLoansByUser(Long userId) {
