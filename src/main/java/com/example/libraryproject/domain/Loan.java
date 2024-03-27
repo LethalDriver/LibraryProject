@@ -23,4 +23,9 @@ public class Loan {
     private LocalDate loanDate;
     private LocalDate returnDate;
     private LocalDate dueDate;
+    private Status status;
+
+    public enum Status {
+    PENDING_APPROVAL, APPROVED, REJECTED, RETURNED
+    }
 }
