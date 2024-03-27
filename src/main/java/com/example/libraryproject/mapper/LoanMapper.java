@@ -14,12 +14,12 @@ public interface LoanMapper {
     @Mapping(target = "loanDate", source = "loanDate", dateFormat = "yyyy-MM-dd")
     @Mapping(target = "returnDate", source = "returnDate", dateFormat = "yyyy-MM-dd")
     @Mapping(target = "dueDate", source = "dueDate", dateFormat = "yyyy-MM-dd")
-    public LoanDTO toDTO(Loan loan);
+    LoanDTO toDTO(Loan loan);
 
     @Mapping(target = "book.id", source = "bookId")
     @Mapping(target = "user.id", source = "userId")
     @Mapping(target = "loanDate", source = "loanDate", dateFormat = "yyyy-MM-dd")
     @Mapping(target = "returnDate", source = "returnDate", dateFormat = "yyyy-MM-dd")
     @Mapping(target = "dueDate", source = "dueDate", dateFormat = "yyyy-MM-dd")
-    public Loan toEntity(LoanDTO loanDTO);
+    Loan toEntity(LoanDTO loanDTO);
 }
