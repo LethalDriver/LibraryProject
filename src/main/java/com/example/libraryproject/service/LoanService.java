@@ -90,4 +90,8 @@ public class LoanService {
     public List<LoanDTO> getAllLoans() {
         return loanRepository.findAll().stream().map(loanMapper::toDTO).toList();
     }
+
+    public void deleteLoan(Long loanId) {
+        loanRepository.deleteById(loanId);
+    }
 }
