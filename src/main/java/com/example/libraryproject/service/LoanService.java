@@ -21,20 +21,22 @@ public class LoanService {
     private final LoanRepository loanRepository;
     private final UserService userService;
 
-    public void approveLoan(Long loanId) {
+    public LoanDTO approveLoan(Long loanId) {
         var loan = loanRepository.findById(loanId).orElseThrow(
                 () -> new IllegalArgumentException("Loan with id " + loanId + " does not exist")
         );
         loan.setStatus(Loan.Status.APPROVED);
         loanRepository.save(loan);
+        return loanMapper.toDTO(loan);
     }
 
-    public void rejectLoan(Long loanId) {
+    public LoanDTO rejectLoan(Long loanId) {
         var loan = loanRepository.findById(loanId).orElseThrow(
                 () -> new IllegalArgumentException("Loan with id " + loanId + " does not exist")
         );
         loan.setStatus(Loan.Status.REJECTED);
         loanRepository.save(loan);
+        return loanMapper.toDTO(loan);
     }
 
     @Transactional
@@ -69,11 +71,11 @@ public class LoanService {
         return loanMapper.toDTO(loan);
     }
 
-    public Optional<LoanDTO> getLoanDetails(Long loanId) {
+    public LoanDTO getLoanDetails(Long loanId) {
         var loan = loanRepository.findById(loanId).orElseThrow(
                 () -> new IllegalArgumentException("Loan with id " + loanId + " does not exist")
         );
-        return Optional.ofNullable(loanMapper.toDTO(loan));
+        return loanMapper.toDTO(loan);
     }
 
     public List<LoanDTO> getLoansByUser(Long userId) {
