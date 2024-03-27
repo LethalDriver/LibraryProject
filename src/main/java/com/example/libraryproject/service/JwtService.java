@@ -5,6 +5,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -14,8 +15,12 @@ import java.util.function.Function;
 
 @Service
 public class JwtService {
-
-    private static final String SECRET_KEY = "17c93162490691203894a0d28f5dfc1819947b821d6336c1f6fcee8b87c802edccf0e10e956edfdb1e79b9cbcd59d59e7bc7227657ad6c04579ffaf3751e2140";
+    @Value("${jwt.secret}")
+    private String SECRET_KEY;
+    @Value("${jwt.access-token-duration}")
+    private Long ACCESS_TOKEN_DURATION;
+    @Value("${jwt.refresh-token-duration}")
+    private Long REFRESH_TOKEN_DURATION;
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
@@ -27,7 +32,7 @@ public class JwtService {
     }
 
     public String generateToken(UserDetails userDetails){
-        return generateToken(userDetails, 1000 * 60L);
+        return generateToken(userDetails, ACCESS_TOKEN_DURATION);
     }
 
     public String generateToken(
@@ -46,7 +51,7 @@ public class JwtService {
     public String generateRefreshToken(
             UserDetails userDetails
     ){
-        long refreshDuration = 1000 * 60 * 48;
+        long refreshDuration = REFRESH_TOKEN_DURATION;
         return generateToken(userDetails, refreshDuration);
     }
 
