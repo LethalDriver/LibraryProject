@@ -33,4 +33,21 @@ public class BookService {
     public Optional<BookDTO> getBookById (Long id) {
         return bookRepository.findById(id).map(bookMapper::toDto);
     }
+
+    public void addBook (BookDTO bookDTO) {
+        bookRepository.save(bookMapper.toEntity(bookDTO));
+    }
+
+    public void updateBook (BookDTO bookDTO) {
+        var updatedBook = bookMapper.toEntity(bookDTO);
+        var existingBook = bookRepository.findById(updatedBook.getId()).orElseThrow(
+                () -> new IllegalArgumentException("Book with id " + updatedBook.getId() + " does not exist")
+        );
+        existingBook.setTitle(updatedBook.getTitle());
+        existingBook.setAuthor(updatedBook.getAuthor());
+        existingBook.setIsbn(updatedBook.getIsbn());
+        existingBook.setPublisher(updatedBook.getPublisher());
+        existingBook.setAvailableCopies(updatedBook.getAvailableCopies());
+        bookRepository.save(existingBook);
+    }
 }
