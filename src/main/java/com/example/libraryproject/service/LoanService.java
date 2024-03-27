@@ -1,6 +1,8 @@
 package com.example.libraryproject.service;
 
 import com.example.libraryproject.domain.Loan;
+import com.example.libraryproject.dto.LoanDTO;
+import com.example.libraryproject.mapper.LoanMapper;
 import com.example.libraryproject.repository.BookRepository;
 import com.example.libraryproject.repository.LoanRepository;
 import jakarta.transaction.Transactional;
@@ -8,11 +10,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class LoanService {
     private final BookRepository bookRepository;
+    private final LoanMapper loanMapper;
     private final LoanRepository loanRepository;
     private final UserService userService;
 
@@ -33,7 +37,7 @@ public class LoanService {
     }
 
     @Transactional
-    public void requestBookLoan(Long bookId, Long userId) {
+    public LoanDTO requestBookLoan(Long bookId, Long userId) {
         var book = bookRepository.findById(bookId).orElseThrow(
                 () -> new IllegalArgumentException("Book with id " + bookId + " does not exist")
         );
@@ -47,11 +51,12 @@ public class LoanService {
                 .user(userService.getUserById(userId))
                 .status(Loan.Status.PENDING_APPROVAL)
                 .build();
-        loanRepository.save(loan);
+        var createdLoan = loanRepository.save(loan);
+        return loanMapper.toDTO(createdLoan);
     }
 
     @Transactional
-    public void returnBook(Long loanId) {
+    public LoanDTO returnBook(Long loanId) {
         var loan = loanRepository.findById(loanId).orElseThrow(
                 () -> new IllegalArgumentException("Loan with id " + loanId + " does not exist")
         );
@@ -60,19 +65,26 @@ public class LoanService {
         loan.setStatus(Loan.Status.RETURNED);
         loanRepository.save(loan);
         bookRepository.save(book);
+        return loanMapper.toDTO(loan);
     }
 
-    public void getLoanDetails(Long loanId) {
-        loanRepository.findById(loanId).orElseThrow(
+    public LoanDTO getLoanDetails(Long loanId) {
+        var loan = loanRepository.findById(loanId).orElseThrow(
                 () -> new IllegalArgumentException("Loan with id " + loanId + " does not exist")
         );
+        return loanMapper.toDTO(loan);
     }
 
-    public void getLoansByUser(Long userId) {
-        loanRepository.findByUserId(userId);
+    public List<LoanDTO> getLoansByUser(Long userId) {
+        var loans = loanRepository.findByUserId(userId);
+        return loans.stream().map(loanMapper::toDTO).toList();
     }
 
-    public void getDelayedLoans() {
-        loanRepository.findByReturnDateBeforeAndStatusNot(LocalDate.now(), Loan.Status.RETURNED);
+    public List<LoanDTO> getDelayedLoans() {
+        return loanRepository.findByDueDateBeforeAndStatusNot(LocalDate.now(), Loan.Status.RETURNED).stream().map(loanMapper::toDTO).toList();
+    }
+
+    public List<LoanDTO> getAllLoans() {
+        return loanRepository.findAll().stream().map(loanMapper::toDTO).toList();
     }
 }
