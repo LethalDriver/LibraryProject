@@ -30,6 +30,12 @@ public class UserService {
         return null;
     }
 
+    public Long getCurrentUserId() {
+        return userRepository.findByEmail(getCurrentUserEmail()).orElseThrow(
+                () -> new EntityNotFoundException("User not found")
+        ).getId();
+    }
+
     public User getCurrentUser() {
         return userRepository.findByEmail(getCurrentUserEmail()).orElseThrow(
                 () -> new EntityNotFoundException("User not found")
