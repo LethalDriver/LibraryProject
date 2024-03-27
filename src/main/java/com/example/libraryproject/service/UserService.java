@@ -39,7 +39,7 @@ public class UserService {
         return null;
     }
 
-    public User registerUser(RegistrationRequest request) {
+    public void registerUser(RegistrationRequest request) {
         if (userRepository.existsByEmail(request.getEmail())) {
             throw new UserAlreadyExistsException("User already exists");
         }
@@ -52,7 +52,7 @@ public class UserService {
                 .role(User.Role.READER)
                 .build();
 
-        return userRepository.save(user);
+        userRepository.save(user);
     }
 
 }
