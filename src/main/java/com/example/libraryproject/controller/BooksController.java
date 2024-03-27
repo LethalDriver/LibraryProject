@@ -24,8 +24,7 @@ public class BooksController {
 
     @GetMapping("/{id}")
     public ResponseEntity<BookDTO> getBookById(@PathVariable String id) {
-        Optional<BookDTO> book = bookService.getBookById(Long.parseLong(id));
-        return book.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+        return ResponseEntity.ok(bookService.getBookById(Long.parseLong(id)));
     }
 
     @PreAuthorize("hasRole('LIBRARIAN')")

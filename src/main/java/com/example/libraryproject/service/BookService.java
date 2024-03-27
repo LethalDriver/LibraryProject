@@ -30,8 +30,10 @@ public class BookService {
         return resultsFromRepo.stream().map(bookMapper::toDto).toList();
     }
 
-    public Optional<BookDTO> getBookById (Long id) {
-        return bookRepository.findById(id).map(bookMapper::toDto);
+    public BookDTO getBookById (Long id) {
+        return bookRepository.findById(id)
+                .map(bookMapper::toDto)
+                .orElseThrow(() -> new IllegalArgumentException("Book with id " + id + " does not exist"));
     }
 
     public BookDTO addBook (BookDTO bookDTO) {
