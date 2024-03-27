@@ -6,6 +6,7 @@ import com.example.libraryproject.service.BookService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,5 +26,17 @@ public class BooksController {
     public ResponseEntity<BookDTO> getBookById(@PathVariable String id) {
         Optional<BookDTO> book = bookService.getBookById(Long.parseLong(id));
         return book.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+    }
+
+    @PreAuthorize("hasRole('LIBRARIAN')")
+    @PostMapping
+    public ResponseEntity<BookDTO> addBook(@RequestBody BookDTO bookDTO) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(bookService.addBook(bookDTO));
+    }
+
+    @PreAuthorize("hasRole('LIBRARIAN')")
+    @PutMapping
+    public ResponseEntity<BookDTO> updateBook(@RequestBody BookDTO bookDTO) {
+        return ResponseEntity.ok(bookService.updateBook(bookDTO));
     }
 }

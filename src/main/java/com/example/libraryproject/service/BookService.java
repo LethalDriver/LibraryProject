@@ -34,11 +34,12 @@ public class BookService {
         return bookRepository.findById(id).map(bookMapper::toDto);
     }
 
-    public void addBook (BookDTO bookDTO) {
-        bookRepository.save(bookMapper.toEntity(bookDTO));
+    public BookDTO addBook (BookDTO bookDTO) {
+        var addedBook = bookRepository.save(bookMapper.toEntity(bookDTO));
+        return bookMapper.toDto(addedBook);
     }
 
-    public void updateBook (BookDTO bookDTO) {
+    public BookDTO updateBook (BookDTO bookDTO) {
         var updatedBook = bookMapper.toEntity(bookDTO);
         var existingBook = bookRepository.findById(updatedBook.getId()).orElseThrow(
                 () -> new IllegalArgumentException("Book with id " + updatedBook.getId() + " does not exist")
@@ -49,5 +50,6 @@ public class BookService {
         existingBook.setPublisher(updatedBook.getPublisher());
         existingBook.setAvailableCopies(updatedBook.getAvailableCopies());
         bookRepository.save(existingBook);
+        return bookMapper.toDto(existingBook);
     }
 }
