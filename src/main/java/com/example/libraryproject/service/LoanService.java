@@ -5,6 +5,7 @@ import com.example.libraryproject.dto.LoanDTO;
 import com.example.libraryproject.mapper.LoanMapper;
 import com.example.libraryproject.repository.BookRepository;
 import com.example.libraryproject.repository.LoanRepository;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -93,5 +94,21 @@ public class LoanService {
 
     public void deleteLoan(Long loanId) {
         loanRepository.deleteById(loanId);
+    }
+
+    public LoanDTO updateLoan(LoanDTO loanDTO) {
+        var updatedLoan = loanMapper.toEntity(loanDTO);
+        var existingLoan = loanRepository.findById(updatedLoan
+                .getId()).orElseThrow(
+                () -> new EntityNotFoundException("Loan with id " + updatedLoan.getId() + " does not exist")
+        );
+        existingLoan.setBook(updatedLoan.getBook());
+        existingLoan.setUser(updatedLoan.getUser());
+        existingLoan.setLoanDate(updatedLoan.getLoanDate());
+        existingLoan.setReturnDate(updatedLoan.getReturnDate());
+        existingLoan.setDueDate(updatedLoan.getDueDate());
+        existingLoan.setStatus(updatedLoan.getStatus());
+        loanRepository.save(existingLoan);
+        return loanMapper.toDTO(existingLoan);
     }
 }
