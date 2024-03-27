@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -84,7 +83,7 @@ public class LoanService {
         return loans.stream().map(loanMapper::toDTO).toList();
     }
 
-    public List<LoanDTO> getDelayedLoans() {
+    public List<LoanDTO> getOverdueLoans() {
         return loanRepository.findByDueDateBeforeAndStatusNot(LocalDate.now(), Loan.Status.RETURNED).stream().map(loanMapper::toDTO).toList();
     }
 

@@ -1,7 +1,6 @@
 package com.example.libraryproject.controller;
 
 import com.example.libraryproject.dto.LoanDTO;
-import com.example.libraryproject.service.BookService;
 import com.example.libraryproject.service.LoanService;
 import com.example.libraryproject.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -11,7 +10,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/loans")
@@ -59,7 +57,7 @@ public class LoanController {
     @PreAuthorize("hasRole('LIBRARIAN')")
     @GetMapping("/overdue")
     public ResponseEntity<List<LoanDTO>> getOverdueLoans() {
-        return ResponseEntity.ok(loanService.getDelayedLoans());
+        return ResponseEntity.ok(loanService.getOverdueLoans());
     }
 
     @PreAuthorize("hasRole('LIBRARIAN')")
