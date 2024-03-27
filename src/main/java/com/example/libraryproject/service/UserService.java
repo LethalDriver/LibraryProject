@@ -20,22 +20,6 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder encoder;
 
-    public String getCurrentUserEmail() {
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-        if (principal instanceof UserDetails) {
-            return ((UserDetails)principal).getUsername();
-        }
-
-        return null;
-    }
-
-    public Long getCurrentUserId() {
-        return userRepository.findByEmail(getCurrentUserEmail()).orElseThrow(
-                () -> new EntityNotFoundException("User not found")
-        ).getId();
-    }
-
     public User getUserById(Long id) {
         return userRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException("User not found")
@@ -43,9 +27,16 @@ public class UserService {
     }
 
     public User getCurrentUser() {
-        return userRepository.findByEmail(getCurrentUserEmail()).orElseThrow(
-                () -> new EntityNotFoundException("User not found")
-        );
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if (principal instanceof UserDetails) {
+            String username = ((UserDetails) principal).getUsername();
+            return userRepository.findByUsername(username).orElseThrow(
+                    () -> new EntityNotFoundException("User not found")
+            );
+        }
+
+        return null;
     }
 
     public User registerUser(RegistrationRequest request) {
