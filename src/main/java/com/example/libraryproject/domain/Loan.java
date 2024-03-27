@@ -16,8 +16,8 @@ public class Loan {
     @Id
     @GeneratedValue
     private Long id;
-    @ManyToMany
-    private List<Book> books;
+    @ManyToOne(cascade = CascadeType.ALL)
+    private Book book;
     @ManyToOne(cascade = CascadeType.ALL)
     private User user;
     private LocalDate loanDate;

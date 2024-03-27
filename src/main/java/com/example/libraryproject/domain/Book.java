@@ -22,6 +22,6 @@ public class Book {
     private String isbn;
     private String publisher;
     private Integer availableCopies;
-    @ManyToMany
+    @OneToMany(mappedBy = "book")
     private List<Loan> loan;
 }
