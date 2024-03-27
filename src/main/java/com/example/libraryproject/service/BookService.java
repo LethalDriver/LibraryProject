@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -16,7 +17,7 @@ public class BookService {
         return bookRepository.findByTitleContainingIgnoreCase(title);
     }
 
-    public List<Book> getBooks(String title) {
+    public List<Book> getAllBooksMatchingTitle (String title) {
         List<Book> resultsFromRepo = findBookByTitleInRepository(title);
         if (resultsFromRepo.isEmpty()) {
             List<Book> resultsFromGoogle = googleBooksService.getBooks(title);
@@ -24,5 +25,9 @@ public class BookService {
             return resultsFromGoogle;
         }
         return resultsFromRepo;
+    }
+
+    public Optional<Book> getBookById (Long id) {
+        return bookRepository.findById(id);
     }
 }

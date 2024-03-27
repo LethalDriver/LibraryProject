@@ -18,6 +18,6 @@ public class BooksController {
     private final BookService bookService;
     @GetMapping
     public ResponseEntity<List<Book>> getBooksMatchingTitle(@RequestParam String title) {
-        return ResponseEntity.ok(bookService.getBooks(title));
+        return ResponseEntity.ok(bookService.getAllBooksMatchingTitle(title));
     }
 }
