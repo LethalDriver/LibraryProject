@@ -4,6 +4,7 @@ import com.example.libraryproject.domain.Book;
 import com.example.libraryproject.dto.BookDTO;
 import com.example.libraryproject.mapper.BookMapper;
 import com.example.libraryproject.repository.BookRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -33,7 +34,7 @@ public class BookService {
     public BookDTO getBookById (Long id) {
         return bookRepository.findById(id)
                 .map(bookMapper::toDto)
-                .orElseThrow(() -> new IllegalArgumentException("Book with id " + id + " does not exist"));
+                .orElseThrow(() -> new EntityNotFoundException("Book with id " + id + " does not exist"));
     }
 
     public BookDTO addBook (BookDTO bookDTO) {
@@ -44,7 +45,7 @@ public class BookService {
     public BookDTO updateBook (BookDTO bookDTO) {
         var updatedBook = bookMapper.toEntity(bookDTO);
         var existingBook = bookRepository.findById(updatedBook.getId()).orElseThrow(
-                () -> new IllegalArgumentException("Book with id " + updatedBook.getId() + " does not exist")
+                () -> new EntityNotFoundException("Book with id " + updatedBook.getId() + " does not exist")
         );
         existingBook.setTitle(updatedBook.getTitle());
         existingBook.setAuthor(updatedBook.getAuthor());
