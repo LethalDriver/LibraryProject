@@ -23,6 +23,7 @@ public class AuthenticationController {
 
     @PostMapping("/register")
     public AuthenticationResponse registerUser(@RequestBody RegistrationRequest request) {
+        userService.registerUser(request);
         return authenticationService.authenticate(new AuthenticationRequest(request.getEmail(), request.getPassword()));
     }
 
