@@ -2,6 +2,7 @@ package com.example.libraryproject.domain;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
@@ -12,6 +13,7 @@ import java.util.List;
 @Entity
 @RequiredArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Loan {
     @Id
     @GeneratedValue
