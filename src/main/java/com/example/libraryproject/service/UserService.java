@@ -36,6 +36,12 @@ public class UserService {
         ).getId();
     }
 
+    public User getUserById(Long id) {
+        return userRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException("User not found")
+        );
+    }
+
     public User getCurrentUser() {
         return userRepository.findByEmail(getCurrentUserEmail()).orElseThrow(
                 () -> new EntityNotFoundException("User not found")
