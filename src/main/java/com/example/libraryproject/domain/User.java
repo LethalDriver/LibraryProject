@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
 
@@ -34,7 +33,7 @@ public class User implements UserDetails {
     @Nonnull
     private Role role;
     @OneToMany(mappedBy = "user")
-    private List<Borrowing> borrowings;
+    private List<Loan> loans;
 
     public enum Role {
         READER, LIBRARIAN

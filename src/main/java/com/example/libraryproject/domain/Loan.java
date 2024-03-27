@@ -5,13 +5,14 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Data
 @Entity
 @RequiredArgsConstructor
 @AllArgsConstructor
-public class Borrowing {
+public class Loan {
     @Id
     @GeneratedValue
     private Long id;
@@ -19,4 +20,7 @@ public class Borrowing {
     private List<Book> books;
     @ManyToOne(cascade = CascadeType.ALL)
     private User user;
+    private LocalDate loanDate;
+    private LocalDate returnDate;
+    private LocalDate dueDate;
 }

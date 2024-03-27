@@ -23,5 +23,5 @@ public class Book {
     private String publisher;
     private Integer availableCopies;
     @ManyToMany
-    private List<Borrowing> borrowing;
+    private List<Loan> loan;
 }
