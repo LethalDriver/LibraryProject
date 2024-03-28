@@ -6,6 +6,7 @@ import com.example.libraryproject.service.BookService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,13 +28,13 @@ public class BooksController {
         return ResponseEntity.ok(bookService.getBookById(Long.parseLong(id)));
     }
 
-    @PreAuthorize("hasRole('LIBRARIAN')")
+    @Secured("ROLE_LIBRARIAN")
     @PostMapping
     public ResponseEntity<BookDTO> addBook(@RequestBody BookDTO bookDTO) {
         return ResponseEntity.status(HttpStatus.CREATED).body(bookService.addBook(bookDTO));
     }
 
-    @PreAuthorize("hasRole('LIBRARIAN')")
+    @Secured("ROLE_LIBRARIAN")
     @PutMapping
     public ResponseEntity<BookDTO> updateBook(@RequestBody BookDTO bookDTO) {
         return ResponseEntity.ok(bookService.updateBook(bookDTO));

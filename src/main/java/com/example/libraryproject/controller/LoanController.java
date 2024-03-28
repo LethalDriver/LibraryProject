@@ -6,6 +6,8 @@ import com.example.libraryproject.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,13 +38,13 @@ public class LoanController {
         return ResponseEntity.status(HttpStatus.CREATED).body(loanDTO);
     }
 
-    @PreAuthorize("hasRole('LIBRARIAN')")
+    @Secured("ROLE_LIBRARIAN")
     @PutMapping
     public ResponseEntity<LoanDTO> updateLoan(@RequestBody LoanDTO loanDTO) {
         return ResponseEntity.ok(loanService.updateLoan(loanDTO));
     }
 
-    @PreAuthorize("hasRole('LIBRARIAN')")
+    @Secured("ROLE_LIBRARIAN")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteLoan(@PathVariable String id) {
         loanService.deleteLoan(Long.parseLong(id));
@@ -54,13 +56,13 @@ public class LoanController {
         return ResponseEntity.ok(loanService.returnBook(Long.parseLong(id)));
     }
 
-    @PreAuthorize("hasRole('LIBRARIAN')")
+    @Secured("ROLE_LIBRARIAN")
     @GetMapping("/overdue")
     public ResponseEntity<List<LoanDTO>> getOverdueLoans() {
         return ResponseEntity.ok(loanService.getOverdueLoans());
     }
 
-    @PreAuthorize("hasRole('LIBRARIAN')")
+    @Secured("ROLE_LIBRARIAN")
     @GetMapping("/user/{userId}")
     public ResponseEntity<List<LoanDTO>> getLoansByUser(@PathVariable String userId) {
         return ResponseEntity.ok(loanService.getLoansByUser(Long.parseLong(userId)));
