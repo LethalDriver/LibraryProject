@@ -1,7 +1,9 @@
 package com.example.libraryproject.config;
 
+import com.example.libraryproject.domain.User;
 import com.example.libraryproject.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -30,6 +32,20 @@ public class ApplicationConfig {
         authProvider.setUserDetailsService(userDetailsService());
         authProvider.setPasswordEncoder(passwordEncoder());
         return authProvider;
+    }
+
+    @Bean
+    public CommandLineRunner setupDefaultUser(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+        return args -> {
+
+            if (userRepository.findByUsername("admin").isEmpty()) {
+                User user = new User();
+                user.setUsername("admin");
+                user.setPassword(passwordEncoder.encode("admin"));
+                user.setRole(User.Role.LIBRARIAN);
+                userRepository.save(user);
+            }
+        };
     }
 
     @Bean
