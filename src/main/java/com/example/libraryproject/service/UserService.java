@@ -31,7 +31,7 @@ public class UserService {
 
         if (principal instanceof UserDetails) {
             String username = ((UserDetails) principal).getUsername();
-            return userRepository.findByUsername(username).orElseThrow(
+            return userRepository.findByEmail(username).orElseThrow(
                     () -> new EntityNotFoundException("User not found")
             );
         }

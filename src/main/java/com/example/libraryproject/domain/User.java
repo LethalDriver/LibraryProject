@@ -38,6 +38,10 @@ public class User implements UserDetails {
     public enum Role {
         READER, LIBRARIAN
     }
+    @Override
+    public String getUsername() {
+        return email;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
