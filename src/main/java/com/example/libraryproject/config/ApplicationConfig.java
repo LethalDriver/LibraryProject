@@ -41,6 +41,7 @@ public class ApplicationConfig {
             if (userRepository.findByUsername("admin").isEmpty()) {
                 User user = new User();
                 user.setUsername("admin");
+                user.setEmail("admin@email.com");
                 user.setPassword(passwordEncoder.encode("admin"));
                 user.setRole(User.Role.LIBRARIAN);
                 userRepository.save(user);
