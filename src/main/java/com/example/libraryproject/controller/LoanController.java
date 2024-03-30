@@ -51,7 +51,7 @@ public class LoanController {
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping("/{id}/return")
+    @PatchMapping("/{id}/return")
     public ResponseEntity<LoanDTO> returnLoan(@PathVariable String id) {
         return ResponseEntity.ok(loanService.returnBook(Long.parseLong(id)));
     }
@@ -74,25 +74,25 @@ public class LoanController {
     }
 
     @Secured("ROLE_LIBRARIAN")
-    @PostMapping("/{id}/approve")
+    @PatchMapping("/{id}/approve")
     public ResponseEntity<LoanDTO> approveLoan(@PathVariable String id) {
         return ResponseEntity.ok(loanService.approveLoan(Long.parseLong(id)));
     }
 
     @Secured("ROLE_LIBRARIAN")
-    @PostMapping("/{id}/reject")
+    @PatchMapping("/{id}/reject")
     public ResponseEntity<LoanDTO> rejectLoan(@PathVariable String id) {
         return ResponseEntity.ok(loanService.rejectLoan(Long.parseLong(id)));
     }
 
     @Secured("ROLE_LIBRARIAN")
-    @PostMapping("/{id}/acceptReturn")
+    @PatchMapping("/{id}/acceptReturn")
     public ResponseEntity<LoanDTO> acceptReturn(@PathVariable String id) {
         return ResponseEntity.ok(loanService.acceptReturnedLoan(Long.parseLong(id)));
     }
 
     @Secured("ROLE_LIBRARIAN")
-    @PostMapping("/{id}/rejectReturn")
+    @PatchMapping("/{id}/rejectReturn")
     public ResponseEntity<LoanDTO> rejectReturn(@PathVariable String id) {
         return ResponseEntity.ok(loanService.rejectReturnedLoan(Long.parseLong(id)));
     }
