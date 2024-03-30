@@ -28,6 +28,6 @@ public class Loan {
     private Status status;
 
     public enum Status {
-    PENDING_APPROVAL, APPROVED, REJECTED, RETURNED
+        PENDING_APPROVAL, APPROVED, REJECTED, RETURNED, RETURNED_ACCEPTED, RETURNED_REJECTED
     }
 }
