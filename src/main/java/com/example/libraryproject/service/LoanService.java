@@ -2,12 +2,14 @@ package com.example.libraryproject.service;
 
 import com.example.libraryproject.domain.Loan;
 import com.example.libraryproject.dto.LoanDTO;
+import com.example.libraryproject.exception.NoBookInStockException;
 import com.example.libraryproject.mapper.LoanMapper;
 import com.example.libraryproject.repository.BookRepository;
 import com.example.libraryproject.repository.LoanRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -20,6 +22,8 @@ public class LoanService {
     private final LoanMapper loanMapper;
     private final LoanRepository loanRepository;
     private final UserService userService;
+    @Value("${loan.duration}")
+    private int loanDuration;
 
     public LoanDTO approveLoan(Long loanId) {
         var loan = loanRepository.findById(loanId).orElseThrow(
@@ -43,6 +47,9 @@ public class LoanService {
         var loan = loanRepository.findById(loanId).orElseThrow(
                 () -> new EntityNotFoundException("Loan with id " + loanId + " does not exist")
         );
+        if (loan.getStatus() != Loan.Status.RETURNED) {
+            throw new IllegalStateException("Loan with id " + loanId + " is not in returned status");
+        }
         loan.setStatus(Loan.Status.RETURNED_ACCEPTED);
         loanRepository.save(loan);
         return loanMapper.toDTO(loan);
@@ -52,6 +59,9 @@ public class LoanService {
         var loan = loanRepository.findById(loanId).orElseThrow(
                 () -> new EntityNotFoundException("Loan with id " + loanId + " does not exist")
         );
+        if (loan.getStatus() != Loan.Status.RETURNED) {
+            throw new IllegalStateException("Loan with id " + loanId + " is not in returned status");
+        }
         loan.setStatus(Loan.Status.RETURNED_REJECTED);
         loanRepository.save(loan);
         return loanMapper.toDTO(loan);
@@ -63,7 +73,7 @@ public class LoanService {
                 () -> new EntityNotFoundException("Book with id " + bookId + " does not exist")
         );
         if (book.getAvailableCopies() == 0) {
-            throw new EntityNotFoundException("Book with id " + bookId + " is not available");
+            throw new NoBookInStockException("Book with id " + bookId + " is not available");
         }
         book.setAvailableCopies(book.getAvailableCopies() - 1);
         bookRepository.save(book);
@@ -71,6 +81,8 @@ public class LoanService {
                 .book(book)
                 .user(userService.getUserById(userId))
                 .status(Loan.Status.PENDING_APPROVAL)
+                .loanDate(LocalDate.now())
+                .dueDate(LocalDate.now().plusDays(loanDuration))
                 .build();
         var createdLoan = loanRepository.save(loan);
         return loanMapper.toDTO(createdLoan);
