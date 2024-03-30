@@ -8,6 +8,6 @@ import java.util.List;
 
 public interface LoanRepository extends JpaRepository<Loan, Long> {
     List<Loan> findByStatus(Loan.Status status);
-    List<Loan> findByDueDateBeforeAndStatusNot(LocalDate date, Loan.Status status);
+    List<Loan> findByDueDateBeforeAndStatusNotIn(LocalDate date, List<Loan.Status> statuses);
     List<Loan> findByUserId(Long userId);
 }

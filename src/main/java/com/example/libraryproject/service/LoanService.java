@@ -84,7 +84,9 @@ public class LoanService {
     }
 
     public List<LoanDTO> getOverdueLoans() {
-        return loanRepository.findByDueDateBeforeAndStatusNot(LocalDate.now(), Loan.Status.RETURNED).stream().map(loanMapper::toDTO).toList();
+        return loanRepository.findByDueDateBeforeAndStatusNotIn(
+                LocalDate.now(), List.of(Loan.Status.RETURNED, Loan.Status.RETURNED_ACCEPTED, Loan.Status.RETURNED_REJECTED)
+        ).stream().map(loanMapper::toDTO).toList();
     }
 
     public List<LoanDTO> getAllLoans() {
