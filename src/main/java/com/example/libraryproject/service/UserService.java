@@ -55,4 +55,21 @@ public class UserService {
         userRepository.save(user);
     }
 
+    public void deleteUser(Long id) {
+        userRepository.deleteById(id);
+    }
+
+    public void updateUser(Long id, RegistrationRequest request) {
+        var user = userRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException("User not found")
+        );
+
+        user.setName(request.getName());
+        user.setUsername(request.getUsername());
+        user.setEmail(request.getEmail());
+        user.setPassword(encoder.encode(request.getPassword()));
+
+        userRepository.save(user);
+    }
+
 }
