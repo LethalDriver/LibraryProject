@@ -12,3 +12,6 @@ jwt:
   secret: "17c93162490691203894a0d28f5dfc1819947b821d6336c1f6fcee8b87c802edccf0e10e956edfdb1e79b9cbcd59d59e7bc7227657ad6c04579ffaf3751e2140"
   access-token-duration: 3600000 # 3600 seconds * 1000 milliseconds
   refresh-token-duration: 86400000 # 3600 seconds * 1000 milliseconds * 24 hours
+
+loan:
+  duration: 14
