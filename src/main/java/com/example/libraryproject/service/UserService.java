@@ -13,8 +13,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -62,7 +60,7 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
-    public void updateUser(Long id, RegistrationRequest request) {
+    public UserDTO updateUser(Long id, RegistrationRequest request) {
         var user = userRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException("User not found")
         );
@@ -72,7 +70,8 @@ public class UserService {
         user.setEmail(request.getEmail());
         user.setPassword(encoder.encode(request.getPassword()));
 
-        userRepository.save(user);
+        var updatedUser = userRepository.save(user);
+        return userMapper.toDto(updatedUser);
     }
 
     public UserDTO getUserInfo(long l) {
