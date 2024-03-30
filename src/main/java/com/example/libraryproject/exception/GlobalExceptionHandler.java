@@ -3,6 +3,7 @@ package com.example.libraryproject.exception;
 import com.example.libraryproject.exception.UserAlreadyExistsException;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ProblemDetail;
@@ -32,6 +33,18 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ProblemDetail> handleUserAlreadyExistsException(UserAlreadyExistsException e) {
         log.error("User already exists", e);
         return buildResponseEntity(HttpStatusCode.valueOf(409), e.getMessage());
+    }
+
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ResponseEntity<ProblemDetail> handleEntityNotFoundException(EntityNotFoundException e) {
+        log.error("Entity not found", e);
+        return buildResponseEntity(HttpStatusCode.valueOf(404), e.getMessage());
+    }
+
+    @ExceptionHandler(NoBookInStockException.class)
+    public ResponseEntity<ProblemDetail> handleNoBookInStockException(NoBookInStockException e) {
+        log.error("No book in stock", e);
+        return buildResponseEntity(HttpStatusCode.valueOf(404), e.getMessage());
     }
 
     @ExceptionHandler(Exception.class)
