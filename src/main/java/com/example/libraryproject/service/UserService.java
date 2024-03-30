@@ -1,7 +1,9 @@
 package com.example.libraryproject.service;
 
 import com.example.libraryproject.dto.RegistrationRequest;
+import com.example.libraryproject.dto.UserDTO;
 import com.example.libraryproject.exception.UserAlreadyExistsException;
+import com.example.libraryproject.mapper.UserMapper;
 import com.example.libraryproject.repository.UserRepository;
 import com.example.libraryproject.domain.User;
 import jakarta.persistence.EntityNotFoundException;
@@ -19,6 +21,7 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder encoder;
+    private final UserMapper userMapper;
 
     public User getUserById(Long id) {
         return userRepository.findById(id).orElseThrow(
@@ -72,4 +75,7 @@ public class UserService {
         userRepository.save(user);
     }
 
+    public UserDTO getUserInfo(long l) {
+        return userMapper.toDto(getUserById(l));
+    }
 }
