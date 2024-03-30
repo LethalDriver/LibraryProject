@@ -23,7 +23,7 @@ public class LoanService {
 
     public LoanDTO approveLoan(Long loanId) {
         var loan = loanRepository.findById(loanId).orElseThrow(
-                () -> new IllegalArgumentException("Loan with id " + loanId + " does not exist")
+                () -> new EntityNotFoundException("Loan with id " + loanId + " does not exist")
         );
         loan.setStatus(Loan.Status.APPROVED);
         loanRepository.save(loan);
@@ -32,7 +32,7 @@ public class LoanService {
 
     public LoanDTO rejectLoan(Long loanId) {
         var loan = loanRepository.findById(loanId).orElseThrow(
-                () -> new IllegalArgumentException("Loan with id " + loanId + " does not exist")
+                () -> new EntityNotFoundException("Loan with id " + loanId + " does not exist")
         );
         loan.setStatus(Loan.Status.REJECTED);
         loanRepository.save(loan);
@@ -42,10 +42,10 @@ public class LoanService {
     @Transactional
     public LoanDTO requestBookLoan(Long bookId, Long userId) {
         var book = bookRepository.findById(bookId).orElseThrow(
-                () -> new IllegalArgumentException("Book with id " + bookId + " does not exist")
+                () -> new EntityNotFoundException("Book with id " + bookId + " does not exist")
         );
         if (book.getAvailableCopies() == 0) {
-            throw new IllegalArgumentException("Book with id " + bookId + " is not available");
+            throw new EntityNotFoundException("Book with id " + bookId + " is not available");
         }
         book.setAvailableCopies(book.getAvailableCopies() - 1);
         bookRepository.save(book);
@@ -61,7 +61,7 @@ public class LoanService {
     @Transactional
     public LoanDTO returnBook(Long loanId) {
         var loan = loanRepository.findById(loanId).orElseThrow(
-                () -> new IllegalArgumentException("Loan with id " + loanId + " does not exist")
+                () -> new EntityNotFoundException("Loan with id " + loanId + " does not exist")
         );
         var book = loan.getBook();
         book.setAvailableCopies(book.getAvailableCopies() + 1);
@@ -73,7 +73,7 @@ public class LoanService {
 
     public LoanDTO getLoanDetails(Long loanId) {
         var loan = loanRepository.findById(loanId).orElseThrow(
-                () -> new IllegalArgumentException("Loan with id " + loanId + " does not exist")
+                () -> new EntityNotFoundException("Loan with id " + loanId + " does not exist")
         );
         return loanMapper.toDTO(loan);
     }
