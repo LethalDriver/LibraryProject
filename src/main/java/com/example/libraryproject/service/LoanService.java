@@ -39,6 +39,24 @@ public class LoanService {
         return loanMapper.toDTO(loan);
     }
 
+    public LoanDTO acceptReturnedLoan(Long loanId) {
+        var loan = loanRepository.findById(loanId).orElseThrow(
+                () -> new EntityNotFoundException("Loan with id " + loanId + " does not exist")
+        );
+        loan.setStatus(Loan.Status.RETURNED_ACCEPTED);
+        loanRepository.save(loan);
+        return loanMapper.toDTO(loan);
+    }
+
+    public LoanDTO rejectReturnedLoan(Long loanId) {
+        var loan = loanRepository.findById(loanId).orElseThrow(
+                () -> new EntityNotFoundException("Loan with id " + loanId + " does not exist")
+        );
+        loan.setStatus(Loan.Status.RETURNED_REJECTED);
+        loanRepository.save(loan);
+        return loanMapper.toDTO(loan);
+    }
+
     @Transactional
     public LoanDTO requestBookLoan(Long bookId, Long userId) {
         var book = bookRepository.findById(bookId).orElseThrow(
