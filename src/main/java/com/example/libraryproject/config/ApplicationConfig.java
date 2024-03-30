@@ -3,6 +3,7 @@ package com.example.libraryproject.config;
 import com.example.libraryproject.domain.User;
 import com.example.libraryproject.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,6 +21,12 @@ import org.springframework.web.client.RestTemplate;
 @RequiredArgsConstructor
 public class ApplicationConfig {
     private final UserRepository repository;
+    @Value("${admin.username}")
+    private String adminUsername;
+    @Value("${admin.password}")
+    private String adminPassword;
+    @Value("${admin.email}")
+    private String adminEmail;
 
     @Bean
     public UserDetailsService userDetailsService() {
@@ -39,12 +46,13 @@ public class ApplicationConfig {
     public CommandLineRunner setupDefaultUser(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         return args -> {
 
-            if (userRepository.findByUsername("admin").isEmpty()) {
-                User user = new User();
-                user.setUsername("admin");
-                user.setEmail("admin@email.com");
-                user.setPassword(passwordEncoder.encode("admin"));
-                user.setRole(User.Role.LIBRARIAN);
+            if (userRepository.findByUsername(adminUsername).isEmpty()) {
+                var user = User.builder()
+                        .username(adminUsername)
+                        .email(adminEmail)
+                        .password(passwordEncoder.encode(adminPassword))
+                        .role(User.Role.LIBRARIAN)
+                        .build();
                 userRepository.save(user);
             }
         };

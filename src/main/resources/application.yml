@@ -15,3 +15,8 @@ jwt:
 
 loan:
   duration: 14
+
+admin:
+  username: "admin"
+  password: "admin"
+  email: "admin@email.com"
