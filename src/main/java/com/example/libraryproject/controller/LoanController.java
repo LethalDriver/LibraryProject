@@ -72,4 +72,28 @@ public class LoanController {
     public ResponseEntity<List<LoanDTO>> getCurrentUserLoans() {
         return ResponseEntity.ok(loanService.getLoansByUser(userService.getCurrentUser().getId()));
     }
+
+    @Secured("ROLE_LIBRARIAN")
+    @PostMapping("/{id}/approve")
+    public ResponseEntity<LoanDTO> approveLoan(@PathVariable String id) {
+        return ResponseEntity.ok(loanService.approveLoan(Long.parseLong(id)));
+    }
+
+    @Secured("ROLE_LIBRARIAN")
+    @PostMapping("/{id}/reject")
+    public ResponseEntity<LoanDTO> rejectLoan(@PathVariable String id) {
+        return ResponseEntity.ok(loanService.rejectLoan(Long.parseLong(id)));
+    }
+
+    @Secured("ROLE_LIBRARIAN")
+    @PostMapping("/{id}/acceptReturn")
+    public ResponseEntity<LoanDTO> acceptReturn(@PathVariable String id) {
+        return ResponseEntity.ok(loanService.acceptReturnedLoan(Long.parseLong(id)));
+    }
+
+    @Secured("ROLE_LIBRARIAN")
+    @PostMapping("/{id}/rejectReturn")
+    public ResponseEntity<LoanDTO> rejectReturn(@PathVariable String id) {
+        return ResponseEntity.ok(loanService.rejectReturnedLoan(Long.parseLong(id)));
+    }
 }
