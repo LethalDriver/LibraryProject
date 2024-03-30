@@ -19,8 +19,11 @@ public class GoogleBooksService {
     private final RestTemplate restTemplate;
     @Value("${google.api.key}")
     private String apiKey;
+
+    @Value("${google.api.max-results}")
+    private int maxResults;
     public List<Book> getBooks(String title) {
-        String url = "https://www.googleapis.com/books/v1/volumes?q=" + title + "&key=" + apiKey;
+        String url = "https://www.googleapis.com/books/v1/volumes?q=" + title + "&key=" + apiKey + "&maxResults=" + maxResults;
 
         ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
 
