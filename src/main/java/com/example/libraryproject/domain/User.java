@@ -34,6 +34,8 @@ public class User implements UserDetails {
     private Role role;
     @OneToMany(mappedBy = "user")
     private List<Loan> loans;
+    @OneToMany(mappedBy = "user")
+    private List<Review> reviews;
 
     public enum Role {
         READER, LIBRARIAN

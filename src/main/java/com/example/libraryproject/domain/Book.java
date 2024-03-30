@@ -24,4 +24,6 @@ public class Book {
     private Integer availableCopies;
     @OneToMany(mappedBy = "book")
     private List<Loan> loan;
+    @OneToMany(mappedBy = "book")
+    private List<Review> reviews;
 }
