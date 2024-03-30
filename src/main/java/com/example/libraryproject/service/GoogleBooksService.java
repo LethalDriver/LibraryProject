@@ -3,6 +3,7 @@ package com.example.libraryproject.service;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONObject;
 import org.json.JSONArray;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -16,8 +17,12 @@ import java.util.Random;
 @RequiredArgsConstructor
 public class GoogleBooksService {
     private final RestTemplate restTemplate;
+    @Value("${google.api.key}")
+    private String apiKey;
     public List<Book> getBooks(String title) {
-        ResponseEntity<String> response = restTemplate.getForEntity("https://www.googleapis.com/books/v1/volumes?q=" + title, String.class);
+        String url = "https://www.googleapis.com/books/v1/volumes?q=" + title + "&key=" + apiKey;
+
+        ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
 
         JSONObject jsonObject = new JSONObject(response.getBody());
         JSONArray items = jsonObject.getJSONArray("items");
@@ -34,8 +39,8 @@ public class GoogleBooksService {
 
     public Book mapResponseElementToBook(JSONObject jsonObject) {
         JSONObject volumeInfo = jsonObject.getJSONObject("volumeInfo");
-        JSONArray authors = volumeInfo.getJSONArray("authors");
-        String author = authors.length() != 0 ? authors.getString(0) : null;
+        JSONArray authors = volumeInfo.optJSONArray("authors");
+        String author = (authors != null && authors.length() != 0) ? authors.getString(0) : null;
         JSONObject industryIdentifiers = volumeInfo.getJSONArray("industryIdentifiers").getJSONObject(0);
         String isbn = industryIdentifiers.getString("identifier");
 
