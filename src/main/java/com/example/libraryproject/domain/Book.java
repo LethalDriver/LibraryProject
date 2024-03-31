@@ -26,6 +26,6 @@ public class Book {
     private List<Loan> loan;
     @OneToMany(mappedBy = "book")
     private List<Review> reviews;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "book")
     private BookDetails bookDetails;
 }

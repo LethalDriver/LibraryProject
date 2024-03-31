@@ -1,5 +1,6 @@
 package com.example.libraryproject.service;
 
+import com.example.libraryproject.domain.BookDetails;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONObject;
 import org.json.JSONArray;
@@ -46,12 +47,28 @@ public class GoogleBooksService {
 
         String publisher = volumeInfo.optString("publisher", null);
 
-        return Book.builder()
+        JSONArray categories = volumeInfo.optJSONArray("categories");
+        String category = (categories != null && categories.length() != 0) ? categories.getString(0) : null;
+        String summary = volumeInfo.optString("description", null);
+        String coverImageUrl = volumeInfo.getJSONObject("imageLinks").getString("thumbnail");
+
+        BookDetails bookDetails = BookDetails.builder()
+                .genre(category)
+                .summary(summary)
+                .coverImageUrl(coverImageUrl)
+                .build();
+
+        Book book = Book.builder()
                 .title(volumeInfo.getString("title"))
                 .author(author)
                 .isbn(isbn)
                 .publisher(publisher)
                 .availableCopies(new Random().nextInt(10) + 1)
+                .bookDetails(bookDetails)
                 .build();
+
+        bookDetails.setBook(book);
+
+        return book;
     }
 }
