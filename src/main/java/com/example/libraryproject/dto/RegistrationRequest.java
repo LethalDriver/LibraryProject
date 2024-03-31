@@ -14,8 +14,7 @@ import lombok.NoArgsConstructor;
 public class RegistrationRequest {
     @Email(message = "Invalid email")
     private String email;
-    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{8,}$",
-            message = "Password must contain at least 8 characters, one uppercase letter, one lowercase letter, and one digit")
+    @Size(min = 8, max = 20, message = "Password must be between 8 and 20 characters")
     private String password;
     @Size(min = 3, max = 40, message = "Name must be between 3 and 40 characters")
     private String name;

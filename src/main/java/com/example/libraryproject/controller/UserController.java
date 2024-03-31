@@ -3,6 +3,7 @@ package com.example.libraryproject.controller;
 import com.example.libraryproject.dto.RegistrationRequest;
 import com.example.libraryproject.dto.UserDTO;
 import com.example.libraryproject.service.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -46,13 +47,13 @@ public class UserController {
 
     @Secured("ROLE_LIBRARIAN")
     @PutMapping("/{id}")
-    public ResponseEntity<UserDTO> updateUser(@PathVariable Long id, @RequestBody @Validated RegistrationRequest registrationRequest) {
+    public ResponseEntity<UserDTO> updateUser(@PathVariable Long id, @RequestBody @Valid RegistrationRequest registrationRequest) {
         UserDTO user = userService.updateUser(id, registrationRequest);
         return ResponseEntity.ok(user);
     }
 
     @PutMapping
-    public ResponseEntity<UserDTO> updateCurrentUser(@RequestBody @Validated RegistrationRequest registrationRequest) {
+    public ResponseEntity<UserDTO> updateCurrentUser(@RequestBody @Valid RegistrationRequest registrationRequest) {
         Long currentUserId = userService.getCurrentUser().getId();
         UserDTO user = userService.updateUser(currentUserId, registrationRequest);
         return ResponseEntity.ok(user);
