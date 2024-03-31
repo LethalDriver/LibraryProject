@@ -33,8 +33,6 @@ public class User implements UserDetails {
     @Email(message = "Invalid email")
     private String email;
     @Nonnull
-    @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{5,20}$",
-            message = "Password must be between 5 and 20 characters, contain at least one digit, one lower case letter, one upper case letter, and one special character")
     private String password;
     @Nonnull
     @Size(min = 3, max = 40, message = "Name must be between 3 and 40 characters")

@@ -18,7 +18,7 @@ loan:
 
 admin:
   username: "admin"
-  password: "Admin1!"
+  password: "Password123!"
   email: "admin@email.com"
 
 google:
