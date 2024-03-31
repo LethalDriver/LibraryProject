@@ -1,6 +1,5 @@
 package com.example.libraryproject.exception;
 
-import com.example.libraryproject.exception.UserAlreadyExistsException;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import jakarta.persistence.EntityNotFoundException;
@@ -8,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -51,6 +51,12 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ProblemDetail> handleIllegalStateException(IllegalStateException e) {
         log.error("Illegal state", e);
         return buildResponseEntity(HttpStatusCode.valueOf(400), e.getMessage());
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<ProblemDetail> handleAccessDeniedException(AccessDeniedException e) {
+        log.error("Access denied", e);
+        return buildResponseEntity(HttpStatusCode.valueOf(403), e.getMessage());
     }
 
     @ExceptionHandler(Exception.class)
