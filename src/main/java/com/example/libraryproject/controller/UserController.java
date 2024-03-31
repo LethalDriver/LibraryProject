@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -45,13 +46,13 @@ public class UserController {
 
     @Secured("ROLE_LIBRARIAN")
     @PutMapping("/{id}")
-    public ResponseEntity<UserDTO> updateUser(@PathVariable Long id, @RequestBody RegistrationRequest registrationRequest) {
+    public ResponseEntity<UserDTO> updateUser(@PathVariable Long id, @RequestBody @Validated RegistrationRequest registrationRequest) {
         UserDTO user = userService.updateUser(id, registrationRequest);
         return ResponseEntity.ok(user);
     }
 
     @PutMapping
-    public ResponseEntity<UserDTO> updateCurrentUser(@RequestBody RegistrationRequest registrationRequest) {
+    public ResponseEntity<UserDTO> updateCurrentUser(@RequestBody @Validated RegistrationRequest registrationRequest) {
         Long currentUserId = userService.getCurrentUser().getId();
         UserDTO user = userService.updateUser(currentUserId, registrationRequest);
         return ResponseEntity.ok(user);
