@@ -22,6 +22,17 @@ public class ReviewService {
         reviewRepository.deleteById(id);
     }
 
+    public void deleteReviewIfBelongsToUser(Long id) {
+        var review = reviewRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException("Review with id " + id + " does not exist")
+        );
+        Long currentUserId = userService.getCurrentUser().getId();
+        if (!Objects.equals(review.getUser().getId(), currentUserId)) {
+            throw new IllegalStateException("User with id " + currentUserId + " cannot delete review with id " + id);
+        }
+        reviewRepository.deleteById(id);
+    }
+
     public ReviewDTO addReview(ReviewDTO reviewDTO) {
         Long currentUserId = userService.getCurrentUser().getId();
         if (!Objects.equals(reviewDTO.userId(), currentUserId)) {

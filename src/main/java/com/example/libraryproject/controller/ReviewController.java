@@ -4,11 +4,11 @@ import com.example.libraryproject.dto.ReviewDTO;
 import com.example.libraryproject.service.ReviewService;
 import com.example.libraryproject.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -17,7 +17,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ReviewController {
     private final ReviewService reviewService;
-    private final UserService userService;
     @GetMapping("/book/{id}")
     public ResponseEntity<List<ReviewDTO>> getReviewsForABook(@PathVariable String id) {
         return ResponseEntity.ok(reviewService.getReviewsForABook(Long.parseLong(id)));
@@ -32,6 +31,31 @@ public class ReviewController {
     @GetMapping("/user/{id}")
     public ResponseEntity<List<ReviewDTO>> getReviewsByUser(@PathVariable String id) {
         return ResponseEntity.ok(reviewService.getReviewsByUser(Long.parseLong(id)));
+    }
+
+    @PostMapping
+    public ResponseEntity<ReviewDTO> addReview(@RequestBody ReviewDTO reviewDTO) {
+        var review = reviewService.addReview(reviewDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(review);
+    }
+
+    @PutMapping
+    public ResponseEntity<ReviewDTO> updateReview(@RequestBody ReviewDTO reviewDTO) {
+        var review = reviewService.updateReview(reviewDTO);
+        return ResponseEntity.ok(review);
+    }
+
+    @DeleteMapping("/{id}")
+    @Secured("ROLE_LIBRARIAN")
+    public ResponseEntity<Void> deleteReview(@PathVariable String id) {
+        reviewService.deleteReview(Long.parseLong(id));
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/{id}/user")
+    public ResponseEntity<Void> deleteReviewIfBelongsToUser(@PathVariable String id) {
+        reviewService.deleteReviewIfBelongsToUser(Long.parseLong(id));
+        return ResponseEntity.noContent().build();
     }
 
 
