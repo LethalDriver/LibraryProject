@@ -1,9 +1,6 @@
 package com.example.libraryproject.domain;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,6 +15,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class Review {
     @Id
+    @GeneratedValue
     private Long id;
     private String review;
     private Integer rating;
