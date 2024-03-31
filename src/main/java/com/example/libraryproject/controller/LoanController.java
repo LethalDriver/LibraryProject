@@ -12,6 +12,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/loans")
@@ -39,8 +40,11 @@ public class LoanController {
     }
 
     @Secured("ROLE_LIBRARIAN")
-    @PutMapping
-    public ResponseEntity<LoanDTO> updateLoan(@RequestBody LoanDTO loanDTO) {
+    @PutMapping("/{id}")
+    public ResponseEntity<LoanDTO> updateLoan(@RequestBody LoanDTO loanDTO, @PathVariable String id) {
+        if (!Objects.equals(loanDTO.id(), Long.parseLong(id))) {
+            throw new IllegalArgumentException("ID in path must match ID in request body");
+        }
         return ResponseEntity.ok(loanService.updateLoan(loanDTO));
     }
 

@@ -11,6 +11,7 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/reviews")
@@ -39,10 +40,12 @@ public class ReviewController {
         return ResponseEntity.status(HttpStatus.CREATED).body(review);
     }
 
-    @PutMapping
-    public ResponseEntity<ReviewDTO> updateReview(@RequestBody ReviewDTO reviewDTO) {
-        var review = reviewService.updateReview(reviewDTO);
-        return ResponseEntity.ok(review);
+    @PutMapping("/{id}")
+    public ResponseEntity<ReviewDTO> updateReview(@RequestBody ReviewDTO reviewDTO, @PathVariable String id) {
+        if (!Objects.equals(reviewDTO.id(), Long.parseLong(id))) {
+            throw new IllegalArgumentException("ID in path must match ID in request body");
+        }
+        return ResponseEntity.ok(reviewService.updateReview(reviewDTO));
     }
 
     @DeleteMapping("/{id}")
