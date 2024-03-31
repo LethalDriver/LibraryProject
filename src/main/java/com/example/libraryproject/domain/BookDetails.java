@@ -1,9 +1,6 @@
 package com.example.libraryproject.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,6 +16,7 @@ public class BookDetails {
     @GeneratedValue
     private Long id;
     private String genre;
+    @Column(length = 2000)
     private String summary;
     private String coverImageUrl;
     @OneToOne
