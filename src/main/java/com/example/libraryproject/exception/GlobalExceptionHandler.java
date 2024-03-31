@@ -3,6 +3,8 @@ package com.example.libraryproject.exception;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ProblemDetail;
@@ -57,6 +59,16 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ProblemDetail> handleAccessDeniedException(AccessDeniedException e) {
         log.error("Access denied", e);
         return buildResponseEntity(HttpStatusCode.valueOf(403), e.getMessage());
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<ProblemDetail> handleConstraintViolationException(ConstraintViolationException e) {
+        log.error("Constraint violation", e);
+        StringBuilder message = new StringBuilder();
+        for (ConstraintViolation<?> violation : e.getConstraintViolations()) {
+            message.append(violation.getPropertyPath()).append(": ").append(violation.getMessage()).append("\n");
+        }
+        return buildResponseEntity(HttpStatusCode.valueOf(400), message.toString());
     }
 
     @ExceptionHandler(Exception.class)
