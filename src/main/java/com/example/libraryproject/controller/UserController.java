@@ -4,6 +4,8 @@ import com.example.libraryproject.dto.RegistrationRequest;
 import com.example.libraryproject.dto.UserDTO;
 import com.example.libraryproject.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,38 +17,43 @@ public class UserController {
 
     @Secured("ROLE_LIBRARIAN")
     @GetMapping("/{id}")
-    public UserDTO getUserInfo(@PathVariable String id) {
-        return userService.getUserInfo(Long.parseLong(id));
+    public ResponseEntity<UserDTO> getUserInfo(@PathVariable String id) {
+        UserDTO user = userService.getUserInfo(Long.parseLong(id));
+        return ResponseEntity.ok(user);
     }
 
     @GetMapping
-    public UserDTO getCurrentUserInfo() {
+    public ResponseEntity<UserDTO> getCurrentUserInfo() {
         Long currentUserId = userService.getCurrentUser().getId();
-        return userService.getUserInfo(currentUserId);
+        UserDTO user = userService.getUserInfo(currentUserId);
+        return ResponseEntity.ok(user);
     }
 
     @DeleteMapping
-    public void deleteCurrentUser() {
+    public ResponseEntity<Void> deleteCurrentUser() {
         Long currentUserId = userService.getCurrentUser().getId();
         userService.deleteUser(currentUserId);
+        return ResponseEntity.noContent().build();
     }
 
     @Secured("ROLE_LIBRARIAN")
     @DeleteMapping("/{id}")
-    public void deleteUser(@PathVariable String id) {
+    public ResponseEntity<Void> deleteUser(@PathVariable String id) {
         userService.deleteUser(Long.parseLong(id));
+        return ResponseEntity.noContent().build();
     }
 
     @Secured("ROLE_LIBRARIAN")
     @PutMapping("/{id}")
-    public UserDTO updateUser(@PathVariable Long id, @RequestBody RegistrationRequest registrationRequest) {
-        return userService.updateUser(id, registrationRequest);
+    public ResponseEntity<UserDTO> updateUser(@PathVariable Long id, @RequestBody RegistrationRequest registrationRequest) {
+        UserDTO user = userService.updateUser(id, registrationRequest);
+        return ResponseEntity.ok(user);
     }
 
     @PutMapping
-    public UserDTO updateCurrentUser(@RequestBody RegistrationRequest registrationRequest) {
+    public ResponseEntity<UserDTO> updateCurrentUser(@RequestBody RegistrationRequest registrationRequest) {
         Long currentUserId = userService.getCurrentUser().getId();
-        return userService.updateUser(currentUserId, registrationRequest);
+        UserDTO user = userService.updateUser(currentUserId, registrationRequest);
+        return ResponseEntity.ok(user);
     }
-
 }
