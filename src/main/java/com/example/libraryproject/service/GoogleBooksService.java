@@ -50,7 +50,8 @@ public class GoogleBooksService {
         JSONArray categories = volumeInfo.optJSONArray("categories");
         String category = (categories != null && categories.length() != 0) ? categories.getString(0) : null;
         String summary = volumeInfo.optString("description", null);
-        String coverImageUrl = volumeInfo.getJSONObject("imageLinks").getString("thumbnail");
+        JSONObject coverImageUrlObj = volumeInfo.optJSONObject("imageLinks");
+        String coverImageUrl = (coverImageUrlObj != null) ? coverImageUrlObj.optString("thumbnail", null) : null;
 
         BookDetails bookDetails = BookDetails.builder()
                 .genre(category)
