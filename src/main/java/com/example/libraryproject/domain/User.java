@@ -2,6 +2,10 @@ package com.example.libraryproject.domain;
 
 import jakarta.annotation.Nonnull;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -23,12 +27,17 @@ public class User implements UserDetails {
     @GeneratedValue
     private Long id;
     @Nonnull
+    @Size(min = 3, max = 20, message = "Username must be between 3 and 20 characters")
     private String username;
     @Nonnull
+    @Email(message = "Invalid email")
     private String email;
     @Nonnull
+    @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{5,20}$",
+            message = "Password must be between 5 and 20 characters, contain at least one digit, one lower case letter, one upper case letter, and one special character")
     private String password;
     @Nonnull
+    @Size(min = 3, max = 40, message = "Name must be between 3 and 40 characters")
     private String name;
     @Nonnull
     private Role role;
