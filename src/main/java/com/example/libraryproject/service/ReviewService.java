@@ -8,19 +8,25 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Objects;
+
 
 @Service
 @RequiredArgsConstructor
 public class ReviewService {
     private final ReviewRepository reviewRepository;
     private final ReviewMapper reviewMapper;
+    private final UserService userService;
 
     public void deleteReview(Long id) {
         reviewRepository.deleteById(id);
     }
 
     public ReviewDTO addReview(ReviewDTO reviewDTO) {
+        Long currentUserId = userService.getCurrentUser().getId();
+        if (!Objects.equals(reviewDTO.userId(), currentUserId)) {
+            throw new IllegalStateException("User with id " + reviewDTO.userId() + " cannot add review for user with id " + currentUserId);
+        }
         var review = reviewRepository.save(reviewMapper.toEntity(reviewDTO));
         return reviewMapper.toDTO(review);
     }
@@ -29,6 +35,10 @@ public class ReviewService {
         var existingReview = reviewRepository.findById(reviewDTO.id()).orElseThrow(
                 () -> new EntityNotFoundException("Review with id " + reviewDTO.id() + " does not exist")
         );
+        Long currentUserId = userService.getCurrentUser().getId();
+        if (!Objects.equals(existingReview.getUser().getId(), currentUserId)) {
+            throw new IllegalStateException("User with id " + reviewDTO.userId() + " cannot update review with id " + reviewDTO.id());
+        }
         var updatedReview = reviewMapper.toEntity(reviewDTO);
         existingReview.setReview(updatedReview.getReview());
         existingReview.setRating(updatedReview.getRating());
