@@ -5,6 +5,7 @@ import com.example.libraryproject.dto.BookDTO;
 import com.example.libraryproject.mapper.BookMapper;
 import com.example.libraryproject.repository.BookRepository;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +22,7 @@ public class BookService {
         return bookRepository.findByTitleContainingIgnoreCase(title);
     }
 
+    @Transactional
     public List<BookDTO> getAllBooksMatchingTitle (String title) {
         List<Book> resultsFromRepo = findBookByTitleInRepository(title);
         if (resultsFromRepo.isEmpty()) {
@@ -37,11 +39,13 @@ public class BookService {
                 .orElseThrow(() -> new EntityNotFoundException("Book with id " + id + " does not exist"));
     }
 
+    @Transactional
     public BookDTO addBook (BookDTO bookDTO) {
         var addedBook = bookRepository.save(bookMapper.toEntity(bookDTO));
         return bookMapper.toDto(addedBook);
     }
 
+    @Transactional
     public BookDTO updateBook (BookDTO bookDTO) {
         var updatedBook = bookMapper.toEntity(bookDTO);
         var existingBook = bookRepository.findById(updatedBook.getId()).orElseThrow(
@@ -52,6 +56,9 @@ public class BookService {
         existingBook.setIsbn(updatedBook.getIsbn());
         existingBook.setPublisher(updatedBook.getPublisher());
         existingBook.setAvailableCopies(updatedBook.getAvailableCopies());
+        existingBook.getBookDetails().setGenre(updatedBook.getBookDetails().getGenre());
+        existingBook.getBookDetails().setSummary(updatedBook.getBookDetails().getSummary());
+        existingBook.getBookDetails().setCoverImageUrl(updatedBook.getBookDetails().getCoverImageUrl());
         bookRepository.save(existingBook);
         return bookMapper.toDto(existingBook);
     }
