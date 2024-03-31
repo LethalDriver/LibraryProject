@@ -12,8 +12,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+
+import java.util.stream.Collectors;
 
 @Slf4j
 @ControllerAdvice
@@ -61,14 +64,13 @@ public class GlobalExceptionHandler {
         return buildResponseEntity(HttpStatusCode.valueOf(403), e.getMessage());
     }
 
-    @ExceptionHandler(ConstraintViolationException.class)
-    public ResponseEntity<ProblemDetail> handleConstraintViolationException(ConstraintViolationException e) {
-        log.error("Constraint violation", e);
-        StringBuilder message = new StringBuilder();
-        for (ConstraintViolation<?> violation : e.getConstraintViolations()) {
-            message.append(violation.getPropertyPath()).append(": ").append(violation.getMessage()).append("\n");
-        }
-        return buildResponseEntity(HttpStatusCode.valueOf(400), message.toString());
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ProblemDetail> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
+        log.error("Validation error", e);
+        String message = e.getBindingResult().getFieldErrors().stream()
+                .map(fieldError -> fieldError.getField() + ": " + fieldError.getDefaultMessage())
+                .collect(Collectors.joining("\n"));
+        return buildResponseEntity(HttpStatusCode.valueOf(400), message);
     }
 
     @ExceptionHandler(Exception.class)
