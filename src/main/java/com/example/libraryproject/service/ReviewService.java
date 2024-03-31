@@ -43,4 +43,16 @@ public class ReviewService {
                 .map(reviewMapper::toDTO)
                 .toList();
     }
+
+    public ReviewDTO getReviewById(Long l) {
+        return reviewRepository.findById(l)
+                .map(reviewMapper::toDTO)
+                .orElseThrow(() -> new EntityNotFoundException("Review with id " + l + " does not exist"));
+    }
+
+    public List<ReviewDTO> getReviewsByUser(Long l) {
+        return reviewRepository.findAllByUserId(l).stream()
+                .map(reviewMapper::toDTO)
+                .toList();
+    }
 }

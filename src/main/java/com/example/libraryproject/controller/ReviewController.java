@@ -18,8 +18,21 @@ import java.util.List;
 public class ReviewController {
     private final ReviewService reviewService;
     private final UserService userService;
-    @GetMapping("/{id}")
+    @GetMapping("/book/{id}")
     public ResponseEntity<List<ReviewDTO>> getReviewsForABook(@PathVariable String id) {
         return ResponseEntity.ok(reviewService.getReviewsForABook(Long.parseLong(id)));
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ReviewDTO> getReviewById(@PathVariable String id) {
+        var review = reviewService.getReviewById(Long.parseLong(id));
+        return ResponseEntity.ok(review);
+    }
+
+    @GetMapping("/user/{id}")
+    public ResponseEntity<List<ReviewDTO>> getReviewsByUser(@PathVariable String id) {
+        return ResponseEntity.ok(reviewService.getReviewsByUser(Long.parseLong(id)));
+    }
+
+
 }
