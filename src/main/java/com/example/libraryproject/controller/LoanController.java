@@ -31,7 +31,7 @@ public class LoanController {
         return ResponseEntity.ok(loan);
     }
 
-    @PostMapping("/request")
+    @PostMapping
     public ResponseEntity<LoanDTO> requestLoan(@RequestParam Long bookId) {
         Long currentUserId = userService.getCurrentUser().getId();
         LoanDTO loanDTO = loanService.requestBookLoan(bookId, currentUserId);
