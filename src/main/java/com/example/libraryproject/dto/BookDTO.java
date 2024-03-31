@@ -6,6 +6,7 @@ public record BookDTO(
         String author,
         String isbn,
         String publisher,
-        Integer availableCopies
+        Integer availableCopies,
+        BookDetailsDTO bookDetails
 ) {
 }
