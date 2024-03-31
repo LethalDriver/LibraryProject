@@ -47,6 +47,12 @@ public class GlobalExceptionHandler {
         return buildResponseEntity(HttpStatusCode.valueOf(404), e.getMessage());
     }
 
+    @ExceptionHandler(IllegalStateException.class)
+    public ResponseEntity<ProblemDetail> handleIllegalStateException(IllegalStateException e) {
+        log.error("Illegal state", e);
+        return buildResponseEntity(HttpStatusCode.valueOf(400), e.getMessage());
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ProblemDetail> handleGenericException(Exception e) {
         log.error("Unhandled exception", e);
