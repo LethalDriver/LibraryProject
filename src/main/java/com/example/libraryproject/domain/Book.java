@@ -26,4 +26,6 @@ public class Book {
     private List<Loan> loan;
     @OneToMany(mappedBy = "book")
     private List<Review> reviews;
+    @OneToOne
+    private BookDetails bookDetails;
 }
