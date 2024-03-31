@@ -7,6 +7,9 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 public class ReviewService {
@@ -33,5 +36,11 @@ public class ReviewService {
         var review = reviewRepository.save(existingReview);
 
         return reviewMapper.toDTO(review);
+    }
+
+    public List<ReviewDTO> getReviewsForABook(Long bookId) {
+        return reviewRepository.findAllByBookId(bookId).stream()
+                .map(reviewMapper::toDTO)
+                .toList();
     }
 }
