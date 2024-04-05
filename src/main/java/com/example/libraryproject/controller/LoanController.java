@@ -21,6 +21,7 @@ public class LoanController {
     private final LoanService loanService;
     private final UserService userService;
 
+    @Secured("ROLE_LIBRARIAN")
     @GetMapping
     public ResponseEntity<List<LoanDTO>> getLoans() {
         return ResponseEntity.ok(loanService.getAllLoans());
@@ -29,7 +30,13 @@ public class LoanController {
     @GetMapping("/{id}")
     public ResponseEntity<LoanDTO> getLoanById(@PathVariable String id) {
         var loan = loanService.getLoanDetails(Long.parseLong(id));
-        return ResponseEntity.ok(loan);
+        var currentUser = userService.getCurrentUser();
+
+        if (currentUser.getAuthorities().contains("ROLE_LIBRARIAN") || Objects.equals(loan.userId(), currentUser.getId())) {
+            return ResponseEntity.ok(loan);
+        } else {
+            throw new IllegalArgumentException("You are not authorized to view this loan");
+        }
     }
 
     @PostMapping
