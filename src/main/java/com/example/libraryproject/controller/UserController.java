@@ -26,15 +26,13 @@ public class UserController {
 
     @GetMapping
     public ResponseEntity<UserDTO> getCurrentUserInfo() {
-        Long currentUserId = userService.getCurrentUser().getId();
-        UserDTO user = userService.getUserInfo(currentUserId);
+        UserDTO user = userService.getCurrentUserInfo();
         return ResponseEntity.ok(user);
     }
 
     @DeleteMapping
     public ResponseEntity<Void> deleteCurrentUser() {
-        Long currentUserId = userService.getCurrentUser().getId();
-        userService.deleteUser(currentUserId);
+        userService.deleteCurrentUser();
         return ResponseEntity.noContent().build();
     }
 
@@ -54,8 +52,7 @@ public class UserController {
 
     @PutMapping
     public ResponseEntity<UserDTO> updateCurrentUser(@RequestBody @Valid RegistrationRequest registrationRequest) {
-        Long currentUserId = userService.getCurrentUser().getId();
-        UserDTO user = userService.updateUser(currentUserId, registrationRequest);
+        UserDTO user = userService.updateCurrentUser(registrationRequest);
         return ResponseEntity.ok(user);
     }
 }

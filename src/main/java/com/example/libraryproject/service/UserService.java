@@ -60,6 +60,11 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
+    public void deleteCurrentUser() {
+        Long currentUserId = getCurrentUser().getId();
+        deleteUser(currentUserId);
+    }
+
     public UserDTO updateUser(Long id, RegistrationRequest request) {
         var user = userRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException("User not found")
@@ -74,7 +79,16 @@ public class UserService {
         return userMapper.toDto(updatedUser);
     }
 
+    public UserDTO updateCurrentUser(RegistrationRequest request) {
+        Long currentUserId = getCurrentUser().getId();
+        return updateUser(currentUserId, request);
+    }
+
     public UserDTO getUserInfo(long l) {
         return userMapper.toDto(getUserById(l));
+    }
+
+    public UserDTO getCurrentUserInfo() {
+        return userMapper.toDto(getCurrentUser());
     }
 }
