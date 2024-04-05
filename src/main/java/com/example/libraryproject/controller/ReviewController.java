@@ -55,11 +55,5 @@ public class ReviewController {
         return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping("/{id}/user")
-    public ResponseEntity<Void> deleteReviewIfBelongsToUser(@PathVariable String id) {
-        reviewService.deleteReviewIfBelongsToUser(Long.parseLong(id));
-        return ResponseEntity.noContent().build();
-    }
-
 
 }

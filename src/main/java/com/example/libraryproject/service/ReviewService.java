@@ -1,5 +1,6 @@
 package com.example.libraryproject.service;
 
+import com.example.libraryproject.domain.User;
 import com.example.libraryproject.dto.ReviewDTO;
 import com.example.libraryproject.mapper.ReviewMapper;
 import com.example.libraryproject.repository.ReviewRepository;
@@ -19,6 +20,14 @@ public class ReviewService {
     private final UserService userService;
 
     public void deleteReview(Long id) {
+        var currentUserId = userService.getCurrentUser().getId();
+        var userRole = userService.getCurrentUser().getRole();
+        var review = reviewRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException("Review with id " + id + " does not exist")
+        );
+        if (userRole == User.Role.READER || !Objects.equals(review.getUser().getId(), currentUserId)) {
+            throw new IllegalStateException("User with id " + currentUserId + " cannot delete review with id " + id);
+        }
         reviewRepository.deleteById(id);
     }
 
