@@ -42,8 +42,14 @@ public class GoogleBooksService {
         JSONObject volumeInfo = jsonObject.getJSONObject("volumeInfo");
         JSONArray authors = volumeInfo.optJSONArray("authors");
         String author = (authors != null && authors.length() != 0) ? authors.getString(0) : null;
-        JSONObject industryIdentifiers = volumeInfo.getJSONArray("industryIdentifiers").getJSONObject(0);
-        String isbn = industryIdentifiers.getString("identifier");
+
+
+        JSONArray industryIdentifiersArray = volumeInfo.optJSONArray("industryIdentifiers");
+        String isbn = null;
+        if (industryIdentifiersArray != null && industryIdentifiersArray.length() != 0) {
+            JSONObject industryIdentifiers = industryIdentifiersArray.getJSONObject(0);
+            isbn = industryIdentifiers.getString("identifier");
+        }
 
         String publisher = volumeInfo.optString("publisher", null);
 
