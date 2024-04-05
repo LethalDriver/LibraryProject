@@ -1,6 +1,7 @@
 package com.example.libraryproject.service;
 
 import com.example.libraryproject.domain.Loan;
+import com.example.libraryproject.domain.User;
 import com.example.libraryproject.dto.LoanDTO;
 import com.example.libraryproject.exception.NoBookInStockException;
 import com.example.libraryproject.mapper.LoanMapper;
@@ -68,7 +69,7 @@ public class LoanService {
     }
 
     @Transactional
-    public LoanDTO requestBookLoan(Long bookId, Long userId) {
+    public LoanDTO requestBookLoan(Long bookId) {
         var book = bookRepository.findById(bookId).orElseThrow(
                 () -> new EntityNotFoundException("Book with id " + bookId + " does not exist")
         );
@@ -79,7 +80,7 @@ public class LoanService {
         bookRepository.save(book);
         var loan = Loan.builder()
                 .book(book)
-                .user(userService.getUserById(userId))
+                .user(userService.getCurrentUser())
                 .status(Loan.Status.PENDING_APPROVAL)
                 .loanDate(LocalDate.now())
                 .dueDate(LocalDate.now().plusDays(loanDuration))
@@ -93,6 +94,10 @@ public class LoanService {
         var loan = loanRepository.findById(loanId).orElseThrow(
                 () -> new EntityNotFoundException("Loan with id " + loanId + " does not exist")
         );
+        var currentUserId = userService.getCurrentUser().getId();
+        if (!loan.getUser().getId().equals(currentUserId)) {
+            throw new IllegalStateException("Loan with id " + loanId + " does not belong to current user");
+        }
         var book = loan.getBook();
         book.setAvailableCopies(book.getAvailableCopies() + 1);
         loan.setStatus(Loan.Status.RETURNED);
@@ -105,12 +110,22 @@ public class LoanService {
         var loan = loanRepository.findById(loanId).orElseThrow(
                 () -> new EntityNotFoundException("Loan with id " + loanId + " does not exist")
         );
+        var currentUserId = userService.getCurrentUser().getId();
+        boolean isLibrarian = userService.getCurrentUser().getRole() == User.Role.LIBRARIAN;
+        if (!isLibrarian && !loan.getUser().getId().equals(currentUserId)) {
+            throw new IllegalArgumentException("You are not authorized to view this loan");
+        }
         return loanMapper.toDTO(loan);
     }
 
     public List<LoanDTO> getLoansByUser(Long userId) {
         var loans = loanRepository.findByUserId(userId);
         return loans.stream().map(loanMapper::toDTO).toList();
+    }
+
+    public List<LoanDTO> getCurrentUserLoans() {
+        var currentUserId = userService.getCurrentUser().getId();
+        return getLoansByUser(currentUserId);
     }
 
     public List<LoanDTO> getOverdueLoans() {

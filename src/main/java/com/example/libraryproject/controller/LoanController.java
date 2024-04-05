@@ -35,8 +35,7 @@ public class LoanController {
 
     @PostMapping
     public ResponseEntity<LoanDTO> requestLoan(@RequestParam Long bookId) {
-        Long currentUserId = userService.getCurrentUser().getId();
-        LoanDTO loanDTO = loanService.requestBookLoan(bookId, currentUserId);
+        LoanDTO loanDTO = loanService.requestBookLoan(bookId);
         return ResponseEntity.status(HttpStatus.CREATED).body(loanDTO);
     }
 
@@ -75,7 +74,7 @@ public class LoanController {
 
     @GetMapping("/user")
     public ResponseEntity<List<LoanDTO>> getCurrentUserLoans() {
-        return ResponseEntity.ok(loanService.getLoansByUser(userService.getCurrentUser().getId()));
+        return ResponseEntity.ok(loanService.getCurrentUserLoans());
     }
 
     @Secured("ROLE_LIBRARIAN")
