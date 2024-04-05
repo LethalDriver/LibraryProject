@@ -6,7 +6,7 @@ import org.mapstruct.Builder;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(componentModel = "spring", builder = @Builder(disableBuilder = true))
+@Mapper(componentModel = "spring", builder = @Builder(disableBuilder = true), uses = {BookMapper.class, UserMapper.class})
 public interface LoanMapper {
 
     @Mapping(target = "bookId", source = "book.id")
