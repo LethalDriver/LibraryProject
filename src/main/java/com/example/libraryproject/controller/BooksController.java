@@ -11,6 +11,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -19,6 +20,10 @@ import java.util.Optional;
 public class BooksController {
     private final BookService bookService;
     @GetMapping
+    public ResponseEntity<List<BookDTO>> getBooks() {
+        return ResponseEntity.ok(bookService.getAllBooks());
+    }
+    @GetMapping("/title")
     public ResponseEntity<List<BookDTO>> getBooksMatchingTitle(@RequestParam String title) {
         return ResponseEntity.ok(bookService.getAllBooksMatchingTitle(title));
     }
@@ -35,8 +40,18 @@ public class BooksController {
     }
 
     @Secured("ROLE_LIBRARIAN")
-    @PutMapping
-    public ResponseEntity<BookDTO> updateBook(@RequestBody BookDTO bookDTO) {
+    @PutMapping("/{id}")
+    public ResponseEntity<BookDTO> updateBook(@RequestBody BookDTO bookDTO, @PathVariable String id) {
+        if (!Objects.equals(bookDTO.id(), Long.parseLong(id))) {
+            throw new IllegalArgumentException("ID in path must match ID in request body");
+        }
         return ResponseEntity.ok(bookService.updateBook(bookDTO));
+    }
+
+    @Secured("ROLE_LIBRARIAN")
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteBook(@PathVariable String id) {
+        bookService.deleteBook(Long.parseLong(id));
+        return ResponseEntity.noContent().build();
     }
 }

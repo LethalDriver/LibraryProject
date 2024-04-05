@@ -62,4 +62,12 @@ public class BookService {
         bookRepository.save(existingBook);
         return bookMapper.toDto(existingBook);
     }
+
+    public void deleteBook(Long bookId) {
+        bookRepository.deleteById(bookId);
+    }
+
+    public List<BookDTO> getAllBooks() {
+        return bookRepository.findAll().stream().map(bookMapper::toDto).toList();
+    }
 }
