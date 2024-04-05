@@ -19,7 +19,6 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class LoanController {
     private final LoanService loanService;
-    private final UserService userService;
 
     @Secured("ROLE_LIBRARIAN")
     @GetMapping
