@@ -26,6 +26,7 @@ public class LoanController {
         return ResponseEntity.ok(loanService.getAllLoans());
     }
 
+    @Secured("ROLE_LIBRARIAN")
     @GetMapping("/{id}")
     public ResponseEntity<LoanDTO> getLoanById(@PathVariable String id) {
         var loan = loanService.getLoanDetails(Long.parseLong(id));
