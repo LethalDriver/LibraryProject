@@ -2,6 +2,7 @@ package com.example.libraryproject.mapper;
 
 import com.example.libraryproject.domain.Review;
 import com.example.libraryproject.dto.ReviewDTO;
+import com.example.libraryproject.dto.ReviewPostRequest;
 import org.mapstruct.Builder;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -14,6 +15,5 @@ public interface ReviewMapper {
     ReviewDTO toDTO(Review review);
     @Mapping(target = "book.id", source = "bookId")
     @Mapping(target = "user.id", source = "userId")
-    @Mapping(target = "reviewDate", source = "reviewDate", dateFormat = "yyyy-MM-dd")
-    Review toEntity(ReviewDTO reviewDTO);
+    Review toEntity(ReviewPostRequest reviewPostRequest);
 }

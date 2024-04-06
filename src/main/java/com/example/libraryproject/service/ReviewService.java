@@ -2,6 +2,7 @@ package com.example.libraryproject.service;
 
 import com.example.libraryproject.domain.User;
 import com.example.libraryproject.dto.ReviewDTO;
+import com.example.libraryproject.dto.ReviewPostRequest;
 import com.example.libraryproject.mapper.ReviewMapper;
 import com.example.libraryproject.repository.ReviewRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -31,38 +32,26 @@ public class ReviewService {
         reviewRepository.deleteById(id);
     }
 
-    public void deleteReviewIfBelongsToUser(Long id) {
-        var review = reviewRepository.findById(id).orElseThrow(
-                () -> new EntityNotFoundException("Review with id " + id + " does not exist")
-        );
+    public ReviewDTO addReview(ReviewPostRequest reviewPostRequest) {
         Long currentUserId = userService.getCurrentUser().getId();
-        if (!Objects.equals(review.getUser().getId(), currentUserId)) {
-            throw new IllegalStateException("User with id " + currentUserId + " cannot delete review with id " + id);
+        if (!Objects.equals(reviewPostRequest.userId(), currentUserId)) {
+            throw new IllegalStateException("User with id " + reviewPostRequest.userId() + " cannot add review for user with id " + currentUserId);
         }
-        reviewRepository.deleteById(id);
-    }
-
-    public ReviewDTO addReview(ReviewDTO reviewDTO) {
-        Long currentUserId = userService.getCurrentUser().getId();
-        if (!Objects.equals(reviewDTO.userId(), currentUserId)) {
-            throw new IllegalStateException("User with id " + reviewDTO.userId() + " cannot add review for user with id " + currentUserId);
-        }
-        var review = reviewRepository.save(reviewMapper.toEntity(reviewDTO));
+        var review = reviewRepository.save(reviewMapper.toEntity(reviewPostRequest));
         return reviewMapper.toDTO(review);
     }
 
-    public ReviewDTO updateReview(ReviewDTO reviewDTO) {
-        var existingReview = reviewRepository.findById(reviewDTO.id()).orElseThrow(
-                () -> new EntityNotFoundException("Review with id " + reviewDTO.id() + " does not exist")
+    public ReviewDTO updateReview(ReviewPostRequest reviewPostRequest, Long reviewId) {
+        var existingReview = reviewRepository.findById(reviewId).orElseThrow(
+                () -> new EntityNotFoundException("Review with id " + reviewId + " does not exist")
         );
         Long currentUserId = userService.getCurrentUser().getId();
         if (!Objects.equals(existingReview.getUser().getId(), currentUserId)) {
-            throw new IllegalStateException("User with id " + reviewDTO.userId() + " cannot update review with id " + reviewDTO.id());
+            throw new IllegalStateException("User with id " + reviewPostRequest.userId() + " cannot update review with id " + reviewId);
         }
-        var updatedReview = reviewMapper.toEntity(reviewDTO);
+        var updatedReview = reviewMapper.toEntity(reviewPostRequest);
         existingReview.setReview(updatedReview.getReview());
         existingReview.setRating(updatedReview.getRating());
-        existingReview.setReviewDate(updatedReview.getReviewDate());
         var review = reviewRepository.save(existingReview);
 
         return reviewMapper.toDTO(review);
