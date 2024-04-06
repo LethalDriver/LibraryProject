@@ -28,8 +28,8 @@ public class LoanController {
 
     @Secured("ROLE_LIBRARIAN")
     @GetMapping("/{id}")
-    public ResponseEntity<LoanDTO> getLoanById(@PathVariable String id) {
-        var loan = loanService.getLoanDetails(Long.parseLong(id));
+    public ResponseEntity<LoanDTO> getLoanById(@PathVariable Long id) {
+        var loan = loanService.getLoanDetails(id);
         return ResponseEntity.ok(loan);
     }
 
@@ -50,14 +50,14 @@ public class LoanController {
 
     @Secured("ROLE_LIBRARIAN")
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteLoan(@PathVariable String id) {
-        loanService.deleteLoan(Long.parseLong(id));
+    public ResponseEntity<Void> deleteLoan(@PathVariable Long id) {
+        loanService.deleteLoan(id);
         return ResponseEntity.noContent().build();
     }
 
     @PatchMapping("/{id}/return")
-    public ResponseEntity<LoanDTO> returnLoan(@PathVariable String id) {
-        return ResponseEntity.ok(loanService.returnBook(Long.parseLong(id)));
+    public ResponseEntity<LoanDTO> returnLoan(@PathVariable Long id) {
+        return ResponseEntity.ok(loanService.returnBook(id));
     }
 
     @Secured("ROLE_LIBRARIAN")
@@ -68,8 +68,8 @@ public class LoanController {
 
     @Secured("ROLE_LIBRARIAN")
     @GetMapping("/user/{userId}")
-    public ResponseEntity<List<LoanDTO>> getLoansByUser(@PathVariable String userId) {
-        return ResponseEntity.ok(loanService.getLoansByUser(Long.parseLong(userId)));
+    public ResponseEntity<List<LoanDTO>> getLoansByUser(@PathVariable Long userId) {
+        return ResponseEntity.ok(loanService.getLoansByUser(userId));
     }
 
     @GetMapping("/user")
@@ -79,25 +79,25 @@ public class LoanController {
 
     @Secured("ROLE_LIBRARIAN")
     @PatchMapping("/{id}/approve")
-    public ResponseEntity<LoanDTO> approveLoan(@PathVariable String id) {
-        return ResponseEntity.ok(loanService.approveLoan(Long.parseLong(id)));
+    public ResponseEntity<LoanDTO> approveLoan(@PathVariable Long id) {
+        return ResponseEntity.ok(loanService.approveLoan(id));
     }
 
     @Secured("ROLE_LIBRARIAN")
     @PatchMapping("/{id}/reject")
-    public ResponseEntity<LoanDTO> rejectLoan(@PathVariable String id) {
-        return ResponseEntity.ok(loanService.rejectLoan(Long.parseLong(id)));
+    public ResponseEntity<LoanDTO> rejectLoan(@PathVariable Long id) {
+        return ResponseEntity.ok(loanService.rejectLoan(id));
     }
 
     @Secured("ROLE_LIBRARIAN")
     @PatchMapping("/{id}/acceptReturn")
-    public ResponseEntity<LoanDTO> acceptReturn(@PathVariable String id) {
-        return ResponseEntity.ok(loanService.acceptReturnedLoan(Long.parseLong(id)));
+    public ResponseEntity<LoanDTO> acceptReturn(@PathVariable Long id) {
+        return ResponseEntity.ok(loanService.acceptReturnedLoan(id));
     }
 
     @Secured("ROLE_LIBRARIAN")
     @PatchMapping("/{id}/rejectReturn")
-    public ResponseEntity<LoanDTO> rejectReturn(@PathVariable String id) {
-        return ResponseEntity.ok(loanService.rejectReturnedLoan(Long.parseLong(id)));
+    public ResponseEntity<LoanDTO> rejectReturn(@PathVariable Long id) {
+        return ResponseEntity.ok(loanService.rejectReturnedLoan(id));
     }
 }

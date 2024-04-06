@@ -29,8 +29,8 @@ public class BooksController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<BookDTO> getBookById(@PathVariable String id) {
-        return ResponseEntity.ok(bookService.getBookById(Long.parseLong(id)));
+    public ResponseEntity<BookDTO> getBookById(@PathVariable Long id) {
+        return ResponseEntity.ok(bookService.getBookById(id));
     }
 
     @Secured("ROLE_LIBRARIAN")
@@ -50,8 +50,8 @@ public class BooksController {
 
     @Secured("ROLE_LIBRARIAN")
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteBook(@PathVariable String id) {
-        bookService.deleteBook(Long.parseLong(id));
+    public ResponseEntity<Void> deleteBook(@PathVariable Long id) {
+        bookService.deleteBook(id);
         return ResponseEntity.noContent().build();
     }
 }

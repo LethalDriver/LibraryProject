@@ -38,8 +38,8 @@ public class UserController {
 
     @Secured("ROLE_LIBRARIAN")
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable String id) {
-        userService.deleteUser(Long.parseLong(id));
+    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
+        userService.deleteUser(id);
         return ResponseEntity.noContent().build();
     }
 
