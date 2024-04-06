@@ -20,8 +20,8 @@ public class Review {
     private String review;
     private Integer rating;
     private LocalDate reviewDate;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     private Book book;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     private User user;
 }
