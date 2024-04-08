@@ -1,6 +1,7 @@
 package com.example.libraryproject.service;
 
 
+import com.example.libraryproject.mapper.UserMapper;
 import com.example.libraryproject.repository.BlacklistedTokenRepository;
 import com.example.libraryproject.exception.TokenBlacklistedException;
 import com.example.libraryproject.dto.TokensDTO;
@@ -20,10 +21,11 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class AuthenticationService {
     private final UserRepository repository;
-    private final PasswordEncoder encoder;
+
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
     private final BlacklistedTokenRepository blacklistedTokenRepository;
+    private final UserMapper userMapper;
 
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
         var userOptional = repository.findByEmail(request.getEmail());
@@ -45,12 +47,11 @@ public class AuthenticationService {
         var user = userOptional.get();
         var jwtToken = jwtService.generateToken(user);
         var refreshToken = jwtService.generateRefreshToken(user);
-        var expirationDate = jwtService.extractExpiration(refreshToken);
-
+        var userDto = userMapper.toDto(user);
         return AuthenticationResponse.builder()
                 .token(jwtToken)
                 .refreshToken(refreshToken)
-                .expirationDate(expirationDate.toString())
+                .user(userDto)
                 .build();
     }
 
@@ -65,11 +66,9 @@ public class AuthenticationService {
         var user = repository.findByEmail(email).orElseThrow();
         var jwtToken = jwtService.generateToken(user);
         var refreshToken = jwtService.generateRefreshToken(user);
-        var expirationDate = jwtService.extractExpiration(refreshToken);
         return AuthenticationResponse.builder()
                 .token(jwtToken)
                 .refreshToken(refreshToken)
-                .expirationDate(expirationDate.toString())
                 .build();
 
     }
