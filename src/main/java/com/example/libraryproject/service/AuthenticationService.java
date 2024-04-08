@@ -1,6 +1,7 @@
 package com.example.libraryproject.service;
 
 
+import com.example.libraryproject.dto.RefreshResponse;
 import com.example.libraryproject.mapper.UserMapper;
 import com.example.libraryproject.repository.BlacklistedTokenRepository;
 import com.example.libraryproject.exception.TokenBlacklistedException;
@@ -55,20 +56,16 @@ public class AuthenticationService {
                 .build();
     }
 
-    public AuthenticationResponse refresh(TokensDTO request) {
+    public RefreshResponse refresh(TokensDTO request) {
         var email = jwtService.extractUsername(request.getRefreshToken());
         var isTokenBlacklisted = blacklistedTokenRepository.existsByToken(request.getRefreshToken());
         if (isTokenBlacklisted) {
             throw new TokenBlacklistedException("Token is blacklisted");
         }
-        blacklistedTokenRepository.save(new BlacklistedToken(request.getToken()));
-        blacklistedTokenRepository.save(new BlacklistedToken(request.getRefreshToken()));
         var user = repository.findByEmail(email).orElseThrow();
         var jwtToken = jwtService.generateToken(user);
-        var refreshToken = jwtService.generateRefreshToken(user);
-        return AuthenticationResponse.builder()
+        return RefreshResponse.builder()
                 .token(jwtToken)
-                .refreshToken(refreshToken)
                 .build();
 
     }

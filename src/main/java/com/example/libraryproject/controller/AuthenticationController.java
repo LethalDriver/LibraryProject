@@ -1,13 +1,11 @@
 package com.example.libraryproject.controller;
 
+import com.example.libraryproject.dto.*;
 import com.example.libraryproject.service.AuthenticationService;
-import com.example.libraryproject.dto.RegistrationRequest;
-import com.example.libraryproject.dto.TokensDTO;
 import com.example.libraryproject.service.UserService;
-import com.example.libraryproject.dto.AuthenticationRequest;
-import com.example.libraryproject.dto.AuthenticationResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -34,8 +32,8 @@ public class AuthenticationController {
         return authenticationService.authenticate(user);
     }
     @PostMapping("/refresh")
-    public AuthenticationResponse refreshToken(@RequestBody TokensDTO request) {
-        return authenticationService.refresh(request);
+    public ResponseEntity<RefreshResponse> refreshToken(@RequestBody TokensDTO request) {
+        return ResponseEntity.ok(authenticationService.refresh(request));
     }
 
     @PostMapping("/logout")
