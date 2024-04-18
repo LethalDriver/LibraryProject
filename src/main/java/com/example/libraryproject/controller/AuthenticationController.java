@@ -22,14 +22,14 @@ public class AuthenticationController {
     private final UserService userService;
 
     @PostMapping("/register")
-    public AuthenticationResponse registerUser(@RequestBody @Valid RegistrationRequest request) {
+    public ResponseEntity<AuthenticationResponse> registerUser(@RequestBody @Valid RegistrationRequest request) {
         userService.registerUser(request);
-        return authenticationService.authenticate(new AuthenticationRequest(request.getEmail(), request.getPassword()));
+        return ResponseEntity.status(201).body(authenticationService.authenticate(new AuthenticationRequest(request.getEmail(), request.getPassword())));
     }
 
     @PostMapping("/login")
-    public AuthenticationResponse loginUser(@RequestBody AuthenticationRequest user) {
-        return authenticationService.authenticate(user);
+    public ResponseEntity<AuthenticationResponse> loginUser(@RequestBody AuthenticationRequest user) {
+        return ResponseEntity.ok().body(authenticationService.authenticate(user));
     }
     @PostMapping("/refresh")
     public ResponseEntity<RefreshResponse> refreshToken(@RequestBody TokensDTO request) {
@@ -37,8 +37,9 @@ public class AuthenticationController {
     }
 
     @PostMapping("/logout")
-    public void logout(@RequestBody TokensDTO request) {
+    public ResponseEntity<Void> logout(@RequestBody TokensDTO request) {
         authenticationService.logout(request);
+        return ResponseEntity.noContent().build();
     }
 
 }
