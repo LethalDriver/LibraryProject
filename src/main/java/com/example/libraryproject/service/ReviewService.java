@@ -35,17 +35,10 @@ public class ReviewService {
     }
 
     public ReviewDTO addReview(ReviewPostRequest reviewPostRequest) {
-        Long currentUserId = userService.getCurrentUser().getId();
-        if (!Objects.equals(reviewPostRequest.userId(), currentUserId)) {
-            throw new IllegalStateException("User with id " + reviewPostRequest.userId() + " cannot add review for user with id " + currentUserId);
-        }
+        var user = userService.getCurrentUser();
 
         Book book = bookRepository.findById(reviewPostRequest.bookId())
                 .orElseThrow(() -> new EntityNotFoundException("Book not found"));
-
-        User user = userRepository.findById(reviewPostRequest.userId())
-                .orElseThrow(() -> new EntityNotFoundException("User not found"));
-
 
         var review = reviewMapper.toEntity(reviewPostRequest);
         review.setBook(book);
