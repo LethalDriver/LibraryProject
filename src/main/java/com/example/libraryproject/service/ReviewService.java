@@ -53,10 +53,6 @@ public class ReviewService {
         var existingReview = reviewRepository.findById(reviewId).orElseThrow(
                 () -> new EntityNotFoundException("Review with id " + reviewId + " does not exist")
         );
-        Long currentUserId = userService.getCurrentUser().getId();
-        if (!Objects.equals(existingReview.getUser().getId(), currentUserId)) {
-            throw new IllegalStateException("User with id " + reviewPostRequest.userId() + " cannot update review with id " + reviewId);
-        }
         var updatedReview = reviewMapper.toEntity(reviewPostRequest);
         existingReview.setReview(updatedReview.getReview());
         existingReview.setRating(updatedReview.getRating());
