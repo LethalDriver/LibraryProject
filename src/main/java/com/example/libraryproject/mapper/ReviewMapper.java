@@ -9,11 +9,12 @@ import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring", builder = @Builder(disableBuilder = true))
 public interface ReviewMapper {
-    @Mapping(target = "reviewDate", source = "reviewDate", dateFormat = "yyyy-MM-dd")
+    @Mapping(target = "reviewDate", source = "reviewDate", dateFormat = "dd-MM-yyyy")
     @Mapping(target = "bookId", source = "book.id")
-    @Mapping(target = "userId", source = "user.id")
+    @Mapping(target = "username", source = "user.username")
     ReviewDTO toDTO(Review review);
     @Mapping(target = "book.id", source = "bookId")
-    @Mapping(target = "user.id", source = "userId")
+    @Mapping(target = "user.username", source = "username")
+    @Mapping(target = "reviewDate", source = "reviewDate", dateFormat = "dd-MM-yyyy")
     Review toEntity(ReviewPostRequest reviewPostRequest);
 }
