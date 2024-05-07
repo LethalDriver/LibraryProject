@@ -14,7 +14,6 @@ public interface ReviewMapper {
     @Mapping(target = "username", source = "user.username")
     ReviewDTO toDTO(Review review);
     @Mapping(target = "book.id", source = "bookId")
-    @Mapping(target = "user.username", source = "username")
-    @Mapping(target = "reviewDate", source = "reviewDate", dateFormat = "dd-MM-yyyy")
+    @Mapping(target = "user.id", source = "userId")
     Review toEntity(ReviewPostRequest reviewPostRequest);
 }
