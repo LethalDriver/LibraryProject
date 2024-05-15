@@ -1,5 +1,7 @@
 package com.example.libraryproject.service;
 
+import com.example.libraryproject.dto.AuthenticationRequest;
+import com.example.libraryproject.dto.AuthenticationResponse;
 import com.example.libraryproject.dto.RegistrationRequest;
 import com.example.libraryproject.dto.UserDTO;
 import com.example.libraryproject.exception.UserAlreadyExistsException;
@@ -20,6 +22,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder encoder;
     private final UserMapper userMapper;
+    private final AuthenticationService authenticationService;
 
     public User getUserById(Long id) {
         return userRepository.findById(id).orElseThrow(
@@ -40,7 +43,7 @@ public class UserService {
         return null;
     }
 
-    public void registerUser(RegistrationRequest request) {
+    public AuthenticationResponse registerUser(RegistrationRequest request) {
         if (userRepository.existsByEmail(request.getEmail())) {
             throw new UserAlreadyExistsException("User already exists");
         }
@@ -54,6 +57,10 @@ public class UserService {
                 .build();
 
         userRepository.save(user);
+
+        return authenticationService.authenticate(
+                new AuthenticationRequest(request.getEmail(), request.getPassword())
+        );
     }
 
     public void deleteUser(Long id) {

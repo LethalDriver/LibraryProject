@@ -29,15 +29,14 @@ public class AuthenticationService {
     private final UserMapper userMapper;
 
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
-        var userOptional = repository.findByEmail(request.getEmail());
-        if (userOptional.isEmpty()) {
-            throw new UsernameNotFoundException("User not found");
-        }
+        var user = repository.findByEmail(request.getEmail()).orElseThrow(
+                () -> new UsernameNotFoundException("User not found")
+        );
 
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
-                            request.getEmail(),
+                            user.getUsername(),
                             request.getPassword()
                     )
             );
@@ -45,7 +44,6 @@ public class AuthenticationService {
             throw new BadCredentialsException("Incorrect password");
         }
 
-        var user = userOptional.get();
         var jwtToken = jwtService.generateToken(user);
         var refreshToken = jwtService.generateRefreshToken(user);
         var userDto = userMapper.toDto(user);
