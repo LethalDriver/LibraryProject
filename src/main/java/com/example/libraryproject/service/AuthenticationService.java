@@ -55,12 +55,12 @@ public class AuthenticationService {
     }
 
     public RefreshResponse refresh(TokensDTO request) {
-        var email = jwtService.extractUsername(request.getRefreshToken());
+        var username = jwtService.extractUsername(request.getRefreshToken());
         var isTokenBlacklisted = blacklistedTokenRepository.existsByToken(request.getRefreshToken());
         if (isTokenBlacklisted) {
             throw new TokenBlacklistedException("Token is blacklisted");
         }
-        var user = repository.findByEmail(email).orElseThrow();
+        var user = repository.findByUsername(username).orElseThrow();
         var jwtToken = jwtService.generateToken(user);
         return RefreshResponse.builder()
                 .token(jwtToken)
