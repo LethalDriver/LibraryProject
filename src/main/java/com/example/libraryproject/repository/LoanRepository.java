@@ -9,5 +9,6 @@ import java.util.List;
 public interface LoanRepository extends JpaRepository<Loan, Long> {
     List<Loan> findByStatus(Loan.Status status);
     List<Loan> findByDueDateBeforeAndStatusNotIn(LocalDate date, List<Loan.Status> statuses);
-    List<Loan> findByUserId(Long userId);
+    List<Loan> findByUser_Username(String username);
+    List<Loan> findByUser_Id(Long userId);
 }

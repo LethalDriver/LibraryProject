@@ -119,7 +119,12 @@ public class LoanService {
     }
 
     public List<LoanDTO> getLoansByUser(Long userId) {
-        var loans = loanRepository.findByUserId(userId);
+        var loans = loanRepository.findByUser_Id(userId);
+        return loans.stream().map(loanMapper::toDTO).toList();
+    }
+
+    public List<LoanDTO> getLoansByUserName(String username) {
+        var loans = loanRepository.findByUser_Username(username);
         return loans.stream().map(loanMapper::toDTO).toList();
     }
 

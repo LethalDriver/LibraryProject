@@ -67,12 +67,12 @@ public class LoanController {
     }
 
     @Secured("ROLE_LIBRARIAN")
-    @GetMapping("/user/{userId}")
-    public ResponseEntity<List<LoanDTO>> getLoansByUser(@PathVariable Long userId) {
-        return ResponseEntity.ok(loanService.getLoansByUser(userId));
+    @GetMapping("/user")
+    public ResponseEntity<List<LoanDTO>> getLoansByUserName(@RequestParam String username) {
+        return ResponseEntity.ok(loanService.getLoansByUserName(username));
     }
 
-    @GetMapping("/user")
+    @GetMapping("/user/current")
     public ResponseEntity<List<LoanDTO>> getCurrentUserLoans() {
         return ResponseEntity.ok(loanService.getCurrentUserLoans());
     }
