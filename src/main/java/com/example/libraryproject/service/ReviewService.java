@@ -1,7 +1,6 @@
 package com.example.libraryproject.service;
 
 import com.example.libraryproject.domain.Book;
-import com.example.libraryproject.domain.User;
 import com.example.libraryproject.dto.ReviewDTO;
 import com.example.libraryproject.dto.ReviewPostRequest;
 import com.example.libraryproject.mapper.ReviewMapper;
@@ -9,13 +8,11 @@ import com.example.libraryproject.repository.BookRepository;
 import com.example.libraryproject.repository.ReviewRepository;
 import com.example.libraryproject.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Objects;
 
 
 @Service
@@ -54,7 +51,7 @@ public class ReviewService {
                 () -> new EntityNotFoundException("Review with id " + reviewId + " does not exist")
         );
         var updatedReview = reviewMapper.toEntity(reviewPostRequest);
-        existingReview.setReview(updatedReview.getReview());
+        existingReview.setReviewContent(updatedReview.getReviewContent());
         existingReview.setRating(updatedReview.getRating());
         var review = reviewRepository.save(existingReview);
 

@@ -17,7 +17,7 @@ public class Review {
     @Id
     @GeneratedValue
     private Long id;
-    private String review;
+    private String reviewContent;
     private Integer rating;
     private LocalDate reviewDate;
     @ManyToOne
