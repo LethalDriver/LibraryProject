@@ -56,10 +56,10 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             }
 
             jwt = authHeader.substring(7);
-            userEmail = jwtService.extractUsername(jwt);
+            var userName = jwtService.extractUsername(jwt);
 
-            if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-                UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
+            if (userName != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                UserDetails userDetails = this.userDetailsService.loadUserByUsername(userName);
 
                 var isTokenBlacklisted = blacklistedTokenRepository.existsByToken(jwt);
 
