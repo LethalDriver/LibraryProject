@@ -50,6 +50,10 @@ public class UserService {
             throw new UserAlreadyExistsException("User already exists");
         }
 
+        if (userRepository.existsByUsername(request.getUsername())) {
+            throw new UserAlreadyExistsException("Username already exists");
+        }
+
         var user = User.builder()
                 .name(request.getName())
                 .username(request.getUsername())
