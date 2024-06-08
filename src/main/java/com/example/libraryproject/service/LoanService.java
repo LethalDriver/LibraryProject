@@ -10,6 +10,7 @@ import com.example.libraryproject.repository.LoanRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +19,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class LoanService {
     private final BookRepository bookRepository;
     private final LoanMapper loanMapper;
@@ -124,7 +126,11 @@ public class LoanService {
     }
 
     public List<LoanDTO> getLoansByUserName(String username) {
+        log.debug("Getting loans for user {}", username);
         var loans = loanRepository.findByUser_Username(username);
+        for (var loan : loans) {
+            log.debug("Loan: {}", loan);
+        }
         return loans.stream().map(loanMapper::toDTO).toList();
     }
 

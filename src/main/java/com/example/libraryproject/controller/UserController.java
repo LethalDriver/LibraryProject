@@ -11,16 +11,29 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/users")
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
+    @Secured("ROLE_LIBRARIAN")
+    @GetMapping("/all")
+    public ResponseEntity<List<UserDTO>> getUsers() {
+        return ResponseEntity.ok(userService.getUsers());
+    }
+
+    @Secured("ROLE_LIBRARIAN")
+    @GetMapping("/search")
+    public ResponseEntity<List<UserDTO>> getUserByUsername(@RequestParam String username) {
+        return ResponseEntity.ok(userService.getUserByUsername(username));
+    }
 
     @Secured("ROLE_LIBRARIAN")
     @GetMapping("/{id}")
-    public ResponseEntity<UserDTO> getUserInfo(@PathVariable String id) {
-        UserDTO user = userService.getUserInfo(Long.parseLong(id));
+    public ResponseEntity<UserDTO> getUserInfo(@PathVariable Long id) {
+        UserDTO user = userService.getUserInfo(id);
         return ResponseEntity.ok(user);
     }
 

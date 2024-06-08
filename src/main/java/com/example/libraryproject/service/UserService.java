@@ -15,6 +15,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -97,5 +99,13 @@ public class UserService {
 
     public UserDTO getCurrentUserInfo() {
         return userMapper.toDto(getCurrentUser());
+    }
+
+    public List<UserDTO> getUsers() {
+        return userRepository.findAll().stream().map(userMapper::toDto).toList();
+    }
+
+    public List<UserDTO> getUserByUsername(String username) {
+        return userRepository.findByUsername(username).stream().map(userMapper::toDto).toList();
     }
 }
