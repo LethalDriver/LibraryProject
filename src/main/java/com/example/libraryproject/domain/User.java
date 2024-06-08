@@ -39,7 +39,7 @@ public class User implements UserDetails {
     private String name;
     @Nonnull
     private Role role;
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Loan> loans;
     @OneToMany(mappedBy = "user")
     private List<Review> reviews;
